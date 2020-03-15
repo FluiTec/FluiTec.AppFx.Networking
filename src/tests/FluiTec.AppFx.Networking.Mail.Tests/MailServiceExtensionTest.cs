@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Options.Exceptions;
 using FluiTec.AppFx.Options.Managers;
@@ -12,7 +13,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
     public class MailServiceExtensionTest
     {
         [TestMethod]
-        public void AddsOptions()
+        public void AddsMailServiceOptions()
         {
             var services = new ServiceCollection();
             var builder = new ConfigurationBuilder()
@@ -32,7 +33,26 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
         }
 
         [TestMethod]
-        public void AddsValidators()
+        public void AddsMailTemplateOptions()
+        {
+            var services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                });
+            var config = builder.Build();
+            var manager = new ConsoleReportingConfigurationManager(config);
+            services.ConfigureMailTemplateService(manager);
+
+            var provider = services.BuildServiceProvider();
+            var settings = provider.GetService<MailTemplateOptions>();
+            Assert.IsNotNull(settings);
+        }
+
+        [TestMethod]
+        public void AddsMailServiceValidators()
         {
             var services = new ServiceCollection();
             var builder = new ConfigurationBuilder()
@@ -50,8 +70,25 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
         }
 
         [TestMethod]
+        public void AddsMailTemplateValidators()
+        {
+            var services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                });
+            var config = builder.Build();
+            var manager = new ConsoleReportingConfigurationManager(config);
+            services.ConfigureMailTemplateService(manager);
+            var validator = manager.Validators[typeof(MailTemplateOptions)];
+            Assert.IsNotNull(validator);
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ValidationException))]
-        public void ValidatesOptions()
+        public void ValidatesMailServiceOptions()
         {
             var services = new ServiceCollection();
             var builder = new ConfigurationBuilder()
@@ -61,9 +98,26 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
+
+            // raises exception for not configured settings
             services.ConfigureMailService(manager);
-            var validator = manager.Validators[typeof(MailServiceOptions)];
-            Assert.IsNotNull(validator);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void ValidatesMailTemplateOptions()
+        {
+            var services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension","cshtml"),
+                });
+            var config = builder.Build();
+            var manager = new ConsoleReportingConfigurationManager(config);
+
+            // raises exception for not configured settings
+            services.ConfigureMailTemplateService(manager);
         }
     }
 }

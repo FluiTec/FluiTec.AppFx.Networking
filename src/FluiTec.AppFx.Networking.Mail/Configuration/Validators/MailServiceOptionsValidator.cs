@@ -2,7 +2,7 @@
 
 namespace FluiTec.AppFx.Networking.Mail.Configuration.Validators
 {
-    /// <summary>Validator for MailServiceOptions</summary>
+    /// <summary>Validator for <see cref="MailServiceOptions"/></summary>
     /// <seealso cref="FluentValidation.AbstractValidator{MailServiceOptions}" />
     public class MailServiceOptionsValidator : AbstractValidator<MailServiceOptions>
     {
