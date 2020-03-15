@@ -15,8 +15,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection ConfigureMailService(this IServiceCollection services, ValidatingConfigurationManager manager)
         {
             // configure options and validators
-            services.Configure<MailServiceOptions>(manager);
             manager.ConfigureValidator(new MailServiceOptionsValidator());
+            services.Configure<MailServiceOptions>(manager);
             return services;
         }
     }
