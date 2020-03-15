@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Ma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Rest.Tests", "tests\FluiTec.AppFx.Networking.Rest.Tests\FluiTec.AppFx.Networking.Rest.Tests.csproj", "{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{7ACDAFD9-3D7A-43DE-A62A-9B36ADAB9BE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Options", "..\fluitec.appfx.options\src\FluiTec.AppFx.Options\FluiTec.AppFx.Options.csproj", "{E7DABC9B-840B-4156-8227-5FABC8C01D60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,10 @@ Global
 		{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7DABC9B-840B-4156-8227-5FABC8C01D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7DABC9B-840B-4156-8227-5FABC8C01D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7DABC9B-840B-4156-8227-5FABC8C01D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7DABC9B-840B-4156-8227-5FABC8C01D60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,6 +60,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A688CBBC-9FEC-462A-99CE-3A8025AEF1C9} = {54425C19-5C76-453A-8BC0-B3D8AB979855}
 		{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A} = {54425C19-5C76-453A-8BC0-B3D8AB979855}
+		{E7DABC9B-840B-4156-8227-5FABC8C01D60} = {7ACDAFD9-3D7A-43DE-A62A-9B36ADAB9BE9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F39AF568-3736-48A8-8A08-98056BDBF343}
