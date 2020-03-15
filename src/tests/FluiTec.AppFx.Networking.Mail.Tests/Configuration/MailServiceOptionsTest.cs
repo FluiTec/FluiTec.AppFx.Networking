@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Networking.Mail.Configuration;
+using MailKit.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration
@@ -25,6 +26,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration
         {
             var options = new MailServiceOptions();
             Assert.AreEqual(25, options.SmtpPort);
+        }
+
+        [TestMethod]
+        public void DefaultsToSecureSocketNone()
+        {
+            var options = new MailServiceOptions();
+            Assert.AreEqual(SecureSocketOptions.None, options.SocketOptions);
         }
     }
 }

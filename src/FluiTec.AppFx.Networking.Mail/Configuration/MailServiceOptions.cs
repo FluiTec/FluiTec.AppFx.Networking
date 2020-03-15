@@ -1,4 +1,5 @@
 ﻿using FluiTec.AppFx.Options.Attributes;
+using MailKit.Security;
 
 namespace FluiTec.AppFx.Networking.Mail.Configuration
 {
@@ -12,6 +13,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
             Authenticate = false;
             SmtpPort = 25;
             EnableSsl = false;
+            SocketOptions = SecureSocketOptions.None;
         }
 
         /// <summary>	Gets or sets a value indicating whether the authenticate. </summary>
@@ -29,6 +31,10 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
         /// <summary>	Gets or sets a value indicating whether the ssl is enabled. </summary>
         /// <value>	True if enable ssl, false if not. </value>
         public bool EnableSsl { get; set; }
+
+        /// <summary>Gets or sets the socket options.</summary>
+        /// <value>The socket options.</value>
+        public SecureSocketOptions SocketOptions { get; set; }
 
         /// <summary>	Gets or sets the username. </summary>
         /// <value>	The username. </value>

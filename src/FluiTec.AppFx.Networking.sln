@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.gitmodules = ..\.gitmodules
 		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
+		..\THIRD_PARTY_LICENSES.md = ..\THIRD_PARTY_LICENSES.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B93F2B60-FB62-4D10-AFFD-14E1298A4981}"
