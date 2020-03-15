@@ -7,21 +7,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\.gitignore = ..\.gitignore
 		..\.gitlab-ci.yml = ..\.gitlab-ci.yml
+		..\.gitmodules = ..\.gitmodules
 		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{B93F2B60-FB62-4D10-AFFD-14E1298A4981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Mail", "FluiTec.AppFx.Networking.Mail\FluiTec.AppFx.Networking.Mail.csproj", "{313F6167-779B-45B4-985E-A30D1BA09BD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Networking.Mail", "FluiTec.AppFx.Networking.Mail\FluiTec.AppFx.Networking.Mail.csproj", "{313F6167-779B-45B4-985E-A30D1BA09BD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Rest", "FluiTec.AppFx.Networking.Rest\FluiTec.AppFx.Networking.Rest.csproj", "{A8DDD642-B265-4895-9842-6C6CAB9EA918}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Networking.Rest", "FluiTec.AppFx.Networking.Rest\FluiTec.AppFx.Networking.Rest.csproj", "{A8DDD642-B265-4895-9842-6C6CAB9EA918}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{54425C19-5C76-453A-8BC0-B3D8AB979855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Mail.Tests", "tests\FluiTec.AppFx.Networking.Mail.Tests\FluiTec.AppFx.Networking.Mail.Tests.csproj", "{A688CBBC-9FEC-462A-99CE-3A8025AEF1C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Networking.Mail.Tests", "tests\FluiTec.AppFx.Networking.Mail.Tests\FluiTec.AppFx.Networking.Mail.Tests.csproj", "{A688CBBC-9FEC-462A-99CE-3A8025AEF1C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluiTec.AppFx.Networking.Rest.Tests", "tests\FluiTec.AppFx.Networking.Rest.Tests\FluiTec.AppFx.Networking.Rest.Tests.csproj", "{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Networking.Rest.Tests", "tests\FluiTec.AppFx.Networking.Rest.Tests\FluiTec.AppFx.Networking.Rest.Tests.csproj", "{FDCD8C49-BCD2-4EF1-A32A-6C8FB6C3D59A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{7ACDAFD9-3D7A-43DE-A62A-9B36ADAB9BE9}"
 EndProject
