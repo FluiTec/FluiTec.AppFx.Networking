@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Options.Exceptions;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,23 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
                     new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
                     new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
                     new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
+                });
+            var config = builder.Build();
+            var manager = new ConsoleReportingConfigurationManager(config);
+            services.ConfigureMailService(manager);
+            var validator = manager.Validators[typeof(MailServiceOptions)];
+            Assert.IsNotNull(validator);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ValidationException))]
+        public void ValidatesOptions()
+        {
+            var services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
