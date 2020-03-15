@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Options.Exceptions;
 using FluiTec.AppFx.Options.Managers;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Networking.Mail.Tests
+namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
 {
     [TestClass]
     public class MailServiceExtensionTest

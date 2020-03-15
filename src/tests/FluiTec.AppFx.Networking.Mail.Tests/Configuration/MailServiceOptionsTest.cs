@@ -1,7 +1,7 @@
 ﻿using FluiTec.AppFx.Networking.Mail.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Networking.Mail.Tests
+namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration
 {
     [TestClass]
     public class MailServiceOptionsTest

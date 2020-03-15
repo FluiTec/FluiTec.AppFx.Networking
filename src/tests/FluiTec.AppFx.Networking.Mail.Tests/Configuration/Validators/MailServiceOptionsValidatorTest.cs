@@ -3,7 +3,7 @@ using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace FluiTec.AppFx.Networking.Mail.Tests
+namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
 {
     [TestClass]
     public class MailServiceOptionsValidatorTest

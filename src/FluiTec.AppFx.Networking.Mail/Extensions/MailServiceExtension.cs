@@ -6,6 +6,7 @@ using FluiTec.AppFx.Options.Managers;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>Extension for MailServices.</summary>
+    // ReSharper disable once UnusedMember.Global
     public static class MailServiceExtension
     {
         /// <summary>Configures the mail service.</summary>
@@ -38,6 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The services.</param>
         /// <param name="manager">The manager.</param>
         /// <returns></returns>
+        // ReSharper disable once UnusedMember.Global
         public static IServiceCollection ConfigureMailServiceTemplated(this IServiceCollection services,
             ValidatingConfigurationManager manager)
         {
