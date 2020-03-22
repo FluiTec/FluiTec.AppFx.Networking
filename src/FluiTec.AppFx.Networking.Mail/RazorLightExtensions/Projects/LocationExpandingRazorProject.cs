@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders;
 using Microsoft.Extensions.Logging;
 using RazorLight.Razor;
@@ -14,9 +13,6 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
     {
         #region Fields
 
-        /// <summary>The root.</summary>
-        private readonly MailTemplateOptions _mailTemplateOptions;
-
         /// <summary>The expanders.</summary>
         private readonly IEnumerable<ILocationExpander> _expanders;
 
@@ -27,16 +23,15 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
 
         #region Constructors
 
-        /// <summary>   Constructor. </summary>
-        /// <exception cref="ArgumentNullException">    Thrown when one or more required arguments are
-        ///                                             null. </exception>
-        /// <param name="templateOptions">  The templateOptions.</param>
-        /// <param name="expanders">        The expanders. </param>
-        /// <param name="logger">           The logger. </param>
-        public LocationExpandingRazorProject(MailTemplateOptions templateOptions, IEnumerable<ILocationExpander> expanders, ILogger<LocationExpandingRazorProject> logger) 
-            : base(templateOptions.BaseDirectory)
+        /// <summary>Constructor.</summary>
+        /// <param name="expanders">The expanders.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="baseDirectory"></param>
+        /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are
+        ///                                           null.</exception>
+        public LocationExpandingRazorProject(IEnumerable<ILocationExpander> expanders, ILogger<LocationExpandingRazorProject> logger, string baseDirectory) 
+            : base(baseDirectory)
         {
-            _mailTemplateOptions = templateOptions;
             _expanders = expanders ?? throw new ArgumentNullException(nameof(expanders));
             _logger = logger;
         }

@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text.RegularExpressions;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Services;
 using FluiTec.AppFx.Options.Exceptions;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
@@ -117,6 +120,36 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
 
             // raises exception for not configured settings
             services.ConfigureMailTemplateService(manager);
+        }
+
+        [TestMethod]
+        public void AddsRazorLight()
+        {
+            var services = new ServiceCollection();
+            var builder = new ConfigurationBuilder()
+                .AddInMemoryCollection(new[]
+                {
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                });
+            var config = builder.Build();
+            var manager = new ConsoleReportingConfigurationManager(config);
+            var environment = new TestHostingEnvironment { ContentRootPath = GetApplicationRoot() };
+            services.AddLogging();
+            services.ConfigureMailServiceTemplated(environment, manager);
+            var s = services.BuildServiceProvider().GetRequiredService<ITemplatingMailService>();
+            Assert.IsNotNull(s);
+        }
+
+        private static string GetApplicationRoot()
+        {
+            var exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
+            var appRoot = appPathMatcher.Match(exePath).Value;
+            return appRoot;
         }
     }
 }

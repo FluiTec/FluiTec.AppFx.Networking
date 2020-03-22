@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // configure options and validators
             manager.ConfigureValidator(new MailServiceOptionsValidator());
             services.Configure<MailServiceOptions>(manager);
+            services.Configure<MailServerCertificateValidationOptions>(manager);
             services.AddScoped<IMailService, ConfigurationValidatingMailService>();
             return services;
         }
@@ -49,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="environment">The environment.</param>
         /// <returns></returns>
         public static IServiceCollection ConfigureRazorLight(this IServiceCollection services,
-            IHostingEnvironment environment)
+            IWebHostEnvironment environment)
         {
             services.AddSingleton<ILocationExpander, DefaultCultureLocationExpander>();
             services.AddSingleton<ILocationExpander, SharedCultureLocationExpander>();
@@ -60,8 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var expanders = provider.GetServices<ILocationExpander>();
                 var templateOptions = provider.GetRequiredService<MailTemplateOptions>();
                 var absoluteRoot = System.IO.Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory);
-                return new LocationExpandingRazorProject(templateOptions, expanders,
-                    provider.GetService<ILogger<LocationExpandingRazorProject>>());
+                return new LocationExpandingRazorProject(expanders, provider.GetService<ILogger<LocationExpandingRazorProject>>(), absoluteRoot);
             });
             services.AddSingleton<IRazorLightEngine>(provider =>
             {
@@ -81,12 +81,13 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         // ReSharper disable once UnusedMember.Global
         public static IServiceCollection ConfigureMailServiceTemplated(this IServiceCollection services, 
-            IHostingEnvironment environment, ValidatingConfigurationManager manager)
+            IWebHostEnvironment environment, ValidatingConfigurationManager manager)
         {
             return services
-                .ConfigureRazorLight(environment)
                 .ConfigureMailService(manager)
-                .ConfigureMailTemplateService(manager);
+                .ConfigureMailTemplateService(manager)
+                .ConfigureRazorLight(environment)
+                .AddScoped<ITemplatingMailService, TemplatingMailService>();
         }
     }
 }
