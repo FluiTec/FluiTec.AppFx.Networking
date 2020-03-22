@@ -19,17 +19,6 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             Engine = engine ?? throw new ArgumentNullException(nameof(engine));
         }
 
-        /// <summary>Specialized constructor for use only by derived class.</summary>
-        /// <param name="options">The options to use.</param>
-        /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-        public RazorLightTemplatingService(MailTemplateOptions options) : base(options)
-        {
-            if (string.IsNullOrWhiteSpace(options.BaseDirectory))
-                throw new ArgumentNullException(nameof(options.BaseDirectory));
-
-            Engine = new RazorLightEngineBuilder().UseFileSystemProject(options.BaseDirectory, options.Extension).Build();
-        }
-
         /// <summary>	Parses. </summary>
         /// <typeparam name="TModel">	Type of the model. </typeparam>
         /// <param name="viewName">	Name of the view. </param>

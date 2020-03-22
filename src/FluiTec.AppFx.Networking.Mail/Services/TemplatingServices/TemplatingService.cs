@@ -32,7 +32,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <typeparam name="TModel">   Type of the model. </typeparam>
         /// <param name="model">    The model. </param>
         /// <returns>A string.</returns>
-        public virtual string Parse<TModel>(TModel model)
+        public virtual string Parse<TModel>(TModel model) where TModel : IMailModel
         {
             return Parse(GetViewName<TModel>(), model);
         }
@@ -42,7 +42,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="viewName"> Name of the view. </param>
         /// <param name="model">    The model. </param>
         /// <returns>A string.</returns>
-        public abstract string Parse<TModel>(string viewName, TModel model);
+        public abstract string Parse<TModel>(string viewName, TModel model) where TModel : IMailModel;
 
         /// <summary>	Gets view name. </summary>
         /// <typeparam name="TModel">	Type of the model. </typeparam>
