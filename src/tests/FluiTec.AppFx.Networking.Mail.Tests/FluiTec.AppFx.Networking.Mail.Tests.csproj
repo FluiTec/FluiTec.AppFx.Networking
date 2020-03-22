@@ -18,8 +18,4 @@
     <ProjectReference Include="..\..\FluiTec.AppFx.Networking.Mail\FluiTec.AppFx.Networking.Mail.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MailViews\" />
-  </ItemGroup>
-
 </Project>

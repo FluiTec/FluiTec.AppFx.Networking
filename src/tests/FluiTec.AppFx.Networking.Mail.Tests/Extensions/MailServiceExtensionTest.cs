@@ -125,6 +125,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
         [TestMethod]
         public void AddsRazorLight()
         {
+            var viewPath = System.IO.Path.Combine(GetApplicationRoot(), "MailViews");
+            if (!System.IO.Directory.Exists(viewPath))
+                System.IO.Directory.CreateDirectory(viewPath);
+
             var services = new ServiceCollection();
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
