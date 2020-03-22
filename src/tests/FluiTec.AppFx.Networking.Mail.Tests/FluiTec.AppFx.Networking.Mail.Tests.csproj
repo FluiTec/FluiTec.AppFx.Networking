@@ -18,4 +18,14 @@
     <ProjectReference Include="..\..\FluiTec.AppFx.Networking.Mail\FluiTec.AppFx.Networking.Mail.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="MailViews\Test.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MailViews\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
