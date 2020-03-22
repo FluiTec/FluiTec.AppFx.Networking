@@ -67,7 +67,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             // validate the certificate itself
             if (!CertificateOptions.CertificateValidation.Validate)
             {
-                Logger?.LogInformation($"-> No special CertificateValidation enabled. Accepting connection.");
+                Logger?.LogInformation("-> No special CertificateValidation enabled. Accepting connection.");
                 return true;
             }
 

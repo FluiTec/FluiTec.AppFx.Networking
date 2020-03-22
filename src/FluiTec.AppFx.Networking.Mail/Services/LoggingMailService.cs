@@ -53,7 +53,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
                 Logger?.LogInformation($"- {r}");
 
             base.SendMail(message);
-            Logger?.LogInformation($"Successfully sent mail.");
+            Logger?.LogInformation("Successfully sent mail.");
         }
 
         /// <summary>Sends the mail asynchronous.</summary>
@@ -66,7 +66,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
                 Logger?.LogInformation($"- {r}");
 
             await base.SendMailAsync(message);
-            Logger?.LogInformation($"Successfully sent mail.");
+            Logger?.LogInformation("Successfully sent mail.");
         }
 
         #endregion
