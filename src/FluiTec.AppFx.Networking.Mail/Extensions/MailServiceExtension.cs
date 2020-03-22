@@ -32,6 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // configure options and validators
             manager.ConfigureValidator(new MailTemplateOptionsValidator());
             services.Configure<MailTemplateOptions>(manager);
+
             return services;
         }
 
