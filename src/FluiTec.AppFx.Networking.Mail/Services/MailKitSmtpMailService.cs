@@ -85,11 +85,18 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region Methods
 
+        /// <summary>Gets the client.</summary>
+        /// <returns></returns>
+        protected virtual SmtpClient GetClient()
+        {
+            return new SmtpClient();
+        }
+
         /// <summary>Sends the mail.</summary>
         /// <param name="message">The message.</param>
-        private void SendMail(MimeMessage message)
+        protected virtual void SendMail(MimeMessage message)
         {
-            using (var client = new SmtpClient())
+            using (var client = GetClient())
             {
                 client.ServerCertificateValidationCallback = CertificateValidationCallback;
 
@@ -115,9 +122,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         /// <summary>Sends the mail asynchronous.</summary>
         /// <param name="message">The message.</param>
-        private async Task SendMailAsync(MimeMessage message)
+        protected virtual async Task SendMailAsync(MimeMessage message)
         {
-            using (var client = new SmtpClient())
+            using (var client = GetClient())
             {
                 client.ServerCertificateValidationCallback = CertificateValidationCallback;
 

@@ -2,12 +2,13 @@
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {
     /// <summary>Configuration-based certificate-validating MailService using MailKit and Smtp.</summary>
     /// <seealso cref="FluiTec.AppFx.Networking.Mail.Services.MailKitSmtpMailService" />
-    public class ConfigurationValidatingMailKitSmtpMailService : MailKitSmtpMailService
+    public class ConfigurationValidatingMailService : LoggingMailService
     {
         #region Properties
 
@@ -15,66 +16,106 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <value>The certificate options.</value>
         public MailServerCertificateValidationOptions CertificateOptions { get; }
 
+        /// <summary>Gets the certificate validation callback.</summary>
+        /// <value>The certificate validation callback.</value>
+        public override RemoteCertificateValidationCallback CertificateValidationCallback { get; }
+
         #endregion
 
+        #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="ConfigurationValidatingMailKitSmtpMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="ConfigurationValidatingMailService"/> class.</summary>
         /// <param name="options">The options.</param>
+        /// <param name="logger">The logger to use.</param>
         /// <param name="certificateOptions"></param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
-        public ConfigurationValidatingMailKitSmtpMailService(MailServiceOptions options, MailServerCertificateValidationOptions certificateOptions) : base(options)
+        public ConfigurationValidatingMailService(MailServiceOptions options, ILogger<ConfigurationValidatingMailService> logger, MailServerCertificateValidationOptions certificateOptions) : base(options, logger)
         {
             CertificateOptions = certificateOptions ?? throw new ArgumentNullException(nameof(certificateOptions));
             CertificateValidationCallback = ValidateCertificate;
         }
 
-        /// <summary>Gets the certificate validation callback.</summary>
-        /// <value>The certificate validation callback.</value>
-        public override RemoteCertificateValidationCallback CertificateValidationCallback { get; }
+        #endregion
+
+        #region Methods
 
         private bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
+            Logger?.LogInformation("Validating MailServer-Certificate.");
+
             // ignore everything in this case
-            if (!CertificateOptions.Validate) return true;
+            if (!CertificateOptions.Validate)
+            {
+                Logger?.LogInformation("-> No Validation enabled. Accepting connection.");
+                return true;
+            }
 
             // don't accept null certificates if validation was enabled
             if (certificate == null)
+            {
+                Logger?.LogInformation("-> Certificate was null. Denying connection.");
                 return false;
+            }
 
             // validate ssl policy errors
             if (!sslpolicyerrors.HasFlag(sslpolicyerrors))
+            {
+                Logger?.LogInformation($"-> Certificate has PolicyErrors. Denying connection. {sslpolicyerrors}");
                 return false;
+            }
 
             // validate the certificate itself
-            if (!CertificateOptions.CertificateValidation.Validate) return true;
+            if (!CertificateOptions.CertificateValidation.Validate)
+            {
+                Logger?.LogInformation($"-> No special CertificateValidation enabled. Accepting connection.");
+                return true;
+            }
 
             // validate subject if any was set
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Subject) &&
                 CertificateOptions.CertificateValidation.Subject != certificate.Subject)
+            {
+                Logger?.LogInformation($"-> Certificate has wrong subject. Actual{certificate.Subject}, Expected: {CertificateOptions.CertificateValidation.Subject}. Denying connection.");
                 return false;
+            }
 
             // validate issuer if any was set
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Issuer) &&
                 CertificateOptions.CertificateValidation.Issuer != certificate.Issuer)
+            {
+                Logger?.LogInformation($"-> Certificate has wrong issuer. Actual{certificate.Issuer}, Expected: {CertificateOptions.CertificateValidation.Issuer}. Denying connection.");
                 return false;
+            }
 
             // validate serial if any was set
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.SerialNumber) &&
                 CertificateOptions.CertificateValidation.SerialNumber != certificate.GetSerialNumberString())
+            {
+                Logger?.LogInformation($"-> Certificate has wrong serial. Actual{certificate.GetSerialNumberString()}, Expected: {CertificateOptions.CertificateValidation.SerialNumber}. Denying connection.");
                 return false;
+            }
 
             // validate hash if any was set
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Hash) &&
                 CertificateOptions.CertificateValidation.Hash != certificate.GetCertHashString())
+            {
+                Logger?.LogInformation($"-> Certificate has wrong hash. Actual{certificate.GetCertHashString()}, Expected: {CertificateOptions.CertificateValidation.Hash}. Denying connection.");
                 return false;
+            }
 
             // validate thumbprint if any was set and certificate is X509Certificate2
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Thumbprint) &&
-                certificate is X509Certificate2 x509Certificate2 && 
+                certificate is X509Certificate2 x509Certificate2 &&
                 CertificateOptions.CertificateValidation.Thumbprint != x509Certificate2.Thumbprint)
+            {
+                Logger?.LogInformation($"-> Certificate has wrong thumbprint. Actual{x509Certificate2.Thumbprint}, Expected: {CertificateOptions.CertificateValidation.Thumbprint}. Denying connection.");
                 return false;
+            }
 
+            Logger?.LogInformation("-> Certificate fulfilled all configured requirements. Accepting connection.");
             return true;
         }
+
+        #endregion
     }
 }
