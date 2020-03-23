@@ -10,7 +10,41 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
     /// </summary>
     public class SmtpSession
     {
+        #region Fields
+
         private readonly Socket _socket;
+        private readonly string _serverName;
+
+        #endregion
+
+        #region Properties
+
+        public int Id { get; }
+        public List<string> ServerHistory { get; set; }
+        public List<string> ClientHistory { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="id"></param>
+        /// /// <param name="serverName"></param>
+        public SmtpSession(Socket socket, int id, string serverName = "coolcat.de")
+        {
+            _socket = socket;
+            Id = id;
+            ServerHistory = new List<string>();
+            ClientHistory = new List<string>();
+            _serverName = serverName;
+        }
+
+        #endregion
+
+        #region Handlers
 
         public delegate void DataHandler(SmtpSession sender, string line);
         public event DataHandler Received;
@@ -22,9 +56,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         public delegate void ExceptionHandler(SmtpSession sender, Exception ex);
         public event ExceptionHandler Error;
 
-        public List<string> ServerHistory { get; set; }
+        #endregion
 
-        public List<string> ClientHistory { get; set; }
+        #region Methods
 
         private void Write(TextWriter sw, string line)
         {
@@ -32,8 +66,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
             sw.WriteLine(line);
             Sent?.Invoke(this, line);
         }
-
-        public int Id { get; }
 
         /// <summary>
         /// process session
@@ -47,7 +79,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
             try
             {
-                streamWriter.WriteLine("220 coolcat.de SMTP Mock Server Ready");
+                streamWriter.WriteLine($"220 {_serverName} SMTP Mock Server Ready");
                 bool datasent = false;
 
                 var ts = DateTime.UtcNow;
@@ -72,7 +104,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
                     if (line.ToUpper().StartsWith("QUIT"))
                     {
-                        Write(streamWriter, "221 coolcat.de Service closing transmission channel");
+                        Write(streamWriter, $"221 {_serverName} Service closing transmission channel");
                         break;
                     }
 
@@ -108,17 +140,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
         }
 
-        /// <summary>
-        /// constructor
-        /// </summary>
-        /// <param name="socket"></param>
-        /// /// <param name="id"></param>
-        public SmtpSession(Socket socket, int id)
-        {
-            _socket = socket;
-            Id = id;
-            ServerHistory = new List<string>();
-            ClientHistory = new List<string>();
-        }
+        #endregion
     }
 }

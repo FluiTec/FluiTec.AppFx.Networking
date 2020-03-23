@@ -27,7 +27,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [TestMethod]
         public void DoesntThrowOnMissingFile()
         {
-            var root = ApplicationHelper.GetApplicationPath();
             var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
             Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }

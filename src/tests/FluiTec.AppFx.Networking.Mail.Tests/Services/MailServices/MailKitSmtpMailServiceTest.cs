@@ -23,23 +23,25 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [ExpectedException(typeof(ValidationException))]
         public void ThrowsOnInvalidOptions()
         {
-            var service = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "localhost"});
+            var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "localhost"});
         }
 
         [TestMethod]
         public void CanSendMail()
         {
-            var mail = "test@example.com";
-            var name = "Test";
-            var subject = "Test";
+            const string mail = "test@example.com";
+            const string name = "Test";
+            const string subject = "Test";
+            const int smtpPort = 50000;
 
-            var mock = new SmtpMock();
+            var mock = new SmtpMock(smtpPort);
             mock.Start();
             try
             {
                 var service = new TestMailKitSmtpMailService(new MailServiceOptions
                 {
                     SmtpServer = "localhost",
+                    SmtpPort = smtpPort,
                     FromName = "Test", FromMail = mail
                 });
                 service.SendEmail(mail, subject, "Test", TextFormat.Text, name);
@@ -58,16 +60,18 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMailAsync()
         {
-            var mail = "test@example.com";
-            var name = "Test";
-            var subject = "Test";
+            const string mail = "test@example.com";
+            const string name = "Test";
+            const string subject = "Test";
+            const int smtpPort = 50000;
 
-            var mock = new SmtpMock();
+            var mock = new SmtpMock(smtpPort);
             mock.Start();
             try
             {
                 var service = new TestMailKitSmtpMailService(new MailServiceOptions
                 {
+                    SmtpPort = smtpPort,
                     SmtpServer = "localhost",
                     FromName = "Test", FromMail = mail
                 });

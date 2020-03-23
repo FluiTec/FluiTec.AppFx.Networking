@@ -10,8 +10,53 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
     /// </summary>
     public class SmtpMock
     {
+        #region Fields
+
         private TcpListener _smtpListener;
         private Thread _smtpServerThread;
+        private readonly int _port;
+        private readonly string _serverName;
+
+        #endregion
+
+        #region Properties
+
+        public SmtpSession Session { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
+        public SmtpMock(int port = 25, string serverName = "coolcat.de")
+        {
+            _port = port;
+            _serverName = serverName;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event SmtpSession.DataHandler Received;
+        public event SmtpSession.DataHandler Sent;
+        public event SmtpSession.EndHandler End;
+
+        #endregion
+
+        #region Handlers
+
+        public delegate void ConnectionHandler(SmtpMock sender, Socket sock);
+        public ConnectionHandler Connect = null;
+
+        public delegate void ExceptionHandler(SmtpMock sender, Exception ex);
+        public ExceptionHandler Error = null;
+
+        public delegate void StartHandler(SmtpMock sender, TcpListener listener);
+        public StartHandler Started = null;
+
+        #endregion
+        
+        #region Methods
 
         /// <summary>
         /// start server
@@ -34,22 +79,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         {
             _smtpListener?.Stop();
         }
-
-        public delegate void ConnectionHandler(SmtpMock sender, Socket sock);
-        public ConnectionHandler Connect = null;
-
-        public delegate void ExceptionHandler(SmtpMock sender, Exception ex);
-        public ExceptionHandler Error = null;
-
-        public delegate void StartHandler(SmtpMock sender, TcpListener listener);
-        public StartHandler Started = null;
-
-        public event SmtpSession.DataHandler Received;
-        public event SmtpSession.DataHandler Sent;
-        public event SmtpSession.EndHandler End;
-
-        public SmtpSession Session { get; private set; }
-
+        
         /// <summary>
         /// run server
         /// </summary>
@@ -57,7 +87,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         {
             try
             {
-                _smtpListener = new TcpListener(IPAddress.Any, 25); // open listener for port 
+                _smtpListener = new TcpListener(IPAddress.Any, _port); // open listener for port 
                 _smtpListener.Start();
 
                 Started?.Invoke(this, _smtpListener);
@@ -70,11 +100,11 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
                     {
                         var clientSocket = _smtpListener.AcceptSocket();
                         Connect?.Invoke(this, clientSocket);
-                        Session = new SmtpSession(clientSocket, count);
-                        Session.Error += session_Error;
-                        Session.Sent += session_Sent;
-                        Session.Received += session_Received;
-                        Session.End += session_End;
+                        Session = new SmtpSession(clientSocket, count, _serverName);
+                        Session.Error += (sender, exception) => Error?.Invoke(this, exception);
+                        Session.Sent += (sender, line) => Sent?.Invoke(sender, line);
+                        Session.Received += (sender, line) => Received?.Invoke(sender, line);
+                        Session.End += sender => End?.Invoke(sender);
                         var sessionThread = new Thread(Session.Process);
                         sessionThread.Start();
                         count++;
@@ -97,24 +127,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
             }
         }
 
-        private void session_End(SmtpSession sender)
-        {
-            End?.Invoke(sender);
-        }
-
-        private void session_Received(SmtpSession sender, string line)
-        {
-            Received?.Invoke(sender, line);
-        }
-
-        private void session_Sent(SmtpSession sender, string line)
-        {
-            Sent?.Invoke(sender, line);
-        }
-
-        private void session_Error(SmtpSession sender, Exception ex)
-        {
-            Error?.Invoke(this, ex);
-        }
+        #endregion
     }
 }

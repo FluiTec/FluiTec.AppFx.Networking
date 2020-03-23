@@ -171,7 +171,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             }
         }
 
-        private void ValidateOptions(MailServiceOptions options)
+        private static void ValidateOptions(MailServiceOptions options)
         {
             var validationResult = new MailServiceOptionsValidator().Validate(options);
             if (!validationResult.IsValid)
