@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
 
         public static string GetMailViewPath()
         {
-            return Path.Combine(GetApplicationCodebase(), "MailViews");
+            return Path.Combine(GetApplicationPath(), "MailViews");
         }
 
         public static string GetApplicationCodebase()
