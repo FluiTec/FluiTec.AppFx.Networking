@@ -136,7 +136,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
-            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationPath() };
+            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationCodebase() };
             services.AddLogging();
             services.ConfigureMailServiceTemplated(environment, manager);
             var s = services.BuildServiceProvider().GetRequiredService<ITemplatingMailService>();

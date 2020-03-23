@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingExpanders()
         {
-            var unused = new LocationExpandingRazorProject(null, null, ApplicationHelper.GetApplicationPath());
+            var unused = new LocationExpandingRazorProject(null, null, ApplicationHelper.GetMailViewPath());
         }
 
         [TestMethod]
@@ -28,14 +28,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         public void DoesntThrowOnMissingFile()
         {
             var root = ApplicationHelper.GetApplicationPath();
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationPath());
+            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
             Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
 
         [TestMethod]
         public void CanFindFile()
         {
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationPath());
+            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
             Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
         }
     }
