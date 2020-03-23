@@ -35,8 +35,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [TestMethod]
         public void CanFindFile()
         {
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
-            Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
+            try
+            {
+                var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
+                Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(ApplicationHelper.GetMailViewPath());
+            }
         }
     }
 }
