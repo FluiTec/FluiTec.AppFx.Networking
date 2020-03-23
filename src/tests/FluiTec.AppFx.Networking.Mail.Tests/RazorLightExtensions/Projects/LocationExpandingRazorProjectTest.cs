@@ -30,5 +30,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
             var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationRoot());
             Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
+
+        [TestMethod]
+        public void CanFindFile()
+        {
+            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationRoot());
+            Assert.IsFalse(project.GetItemAsync("Test").Result.Exists);
+        }
     }
 }
