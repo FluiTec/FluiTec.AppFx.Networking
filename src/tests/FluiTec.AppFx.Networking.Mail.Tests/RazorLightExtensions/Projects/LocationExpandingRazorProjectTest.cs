@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingExpanders()
         {
-            var unused = new LocationExpandingRazorProject(null, null, ApplicationHelper.GetApplicationRoot());
+            var unused = new LocationExpandingRazorProject(null, null, ApplicationHelper.GetApplicationPath());
         }
 
         [TestMethod]
@@ -27,22 +27,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [TestMethod]
         public void DoesntThrowOnMissingFile()
         {
-            try
-            {
-                var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationRoot());
-                Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
-            }
-            catch (DirectoryNotFoundException e)
-            {
-                Console.WriteLine(ApplicationHelper.GetApplicationRoot());
-                throw;
-            }
+            var root = ApplicationHelper.GetApplicationPath();
+            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationPath());
+            Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
 
         [TestMethod]
         public void CanFindFile()
         {
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationRoot());
+            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetApplicationPath());
             Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
         }
     }
