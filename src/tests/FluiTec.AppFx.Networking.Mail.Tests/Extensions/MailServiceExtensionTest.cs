@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
@@ -23,7 +24,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 {
                     new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
                     new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -42,7 +43,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 .AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -62,7 +63,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 {
                     new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
                     new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -79,7 +80,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 .AddInMemoryCollection(new[]
                 {
                     new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -96,7 +97,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -113,7 +114,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension","cshtml"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension","cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -133,7 +134,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                     new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
                     new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
                     new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -146,7 +147,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
 
         private static string GetApplicationRoot()
         {
-            var exePath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase);
+            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
             var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
             var appRoot = appPathMatcher.Match(exePath).Value;
             return appRoot;

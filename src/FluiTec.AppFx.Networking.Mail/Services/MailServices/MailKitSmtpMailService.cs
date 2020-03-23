@@ -1,11 +1,11 @@
-﻿using FluiTec.AppFx.Networking.Mail.Configuration;
-using MailKit.Net.Smtp;
-using MimeKit;
-using MimeKit.Text;
-using System;
+﻿using System;
 using System.Net.Security;
 using System.Threading.Tasks;
+using FluiTec.AppFx.Networking.Mail.Configuration;
+using MailKit.Net.Smtp;
 using MailKit.Security;
+using MimeKit;
+using MimeKit.Text;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {

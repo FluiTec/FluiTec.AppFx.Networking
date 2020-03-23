@@ -1,4 +1,5 @@
-﻿using FluiTec.AppFx.Networking.Mail.Configuration;
+﻿using System.IO;
+using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects;
@@ -60,7 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var expanders = provider.GetServices<ILocationExpander>();
                 var templateOptions = provider.GetRequiredService<MailTemplateOptions>();
-                var absoluteRoot = System.IO.Path.GetFullPath(System.IO.Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
+                var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
                 return new LocationExpandingRazorProject(expanders, provider.GetService<ILogger<LocationExpandingRazorProject>>(), absoluteRoot);
             });
             services.AddSingleton<IRazorLightEngine>(provider =>

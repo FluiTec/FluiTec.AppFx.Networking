@@ -1,8 +1,9 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.FileProviders;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
 {
-    public class TestHostingEnvironment : Microsoft.AspNetCore.Hosting.IWebHostEnvironment
+    public class TestHostingEnvironment : IWebHostEnvironment
     {
         public string ApplicationName { get; set; }
 
