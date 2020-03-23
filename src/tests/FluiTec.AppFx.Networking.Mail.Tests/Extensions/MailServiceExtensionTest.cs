@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
+using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Options.Exceptions;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.Extensions.Configuration;
@@ -138,19 +136,11 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
-            var environment = new TestHostingEnvironment { ContentRootPath = GetApplicationRoot() };
+            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationRoot() };
             services.AddLogging();
             services.ConfigureMailServiceTemplated(environment, manager);
             var s = services.BuildServiceProvider().GetRequiredService<ITemplatingMailService>();
             Assert.IsNotNull(s);
-        }
-
-        private static string GetApplicationRoot()
-        {
-            var exePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
-            var appPathMatcher = new Regex(@"(?<!fil)[A-Za-z]:\\+[\S\s]*?(?=\\+bin)");
-            var appRoot = appPathMatcher.Match(exePath).Value;
-            return appRoot;
         }
     }
 }

@@ -49,11 +49,13 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
                 foreach (var location in expander.Expand(templateKey))
                 {
                     var absolutePath = NormalizeKey(location);
-                    _logger.LogInformation($"Trying to find MailTemplate {absolutePath}.");
-                    if (File.Exists(absolutePath))
-                        return Task.FromResult(
-                            (RazorLightProjectItem)new FileSystemRazorProjectItem(location,
-                                new FileInfo(absolutePath)));
+                    _logger?.LogInformation($"Trying to find MailTemplate {templateKey} in {absolutePath}.");
+
+                    if (!File.Exists(absolutePath)) continue;
+                    _logger.LogInformation($"Found MailTemplate {templateKey} in {absolutePath}.");
+                    return Task.FromResult(
+                        (RazorLightProjectItem) new FileSystemRazorProjectItem(location,
+                            new FileInfo(absolutePath)));
                 }
 
             // let the base-class try it's best and throw...
