@@ -55,6 +55,35 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             }
         }
 
+        [TestMethod]
+        public void CanSendMailAsync()
+        {
+            var mail = "test@example.com";
+            var name = "Test";
+            var subject = "Test";
+
+            var mock = new SmtpMock();
+            mock.Start();
+            try
+            {
+                var service = new TestMailKitSmtpMailService(new MailServiceOptions
+                {
+                    SmtpServer = "localhost",
+                    FromName = "Test", FromMail = mail
+                });
+                service.SendEmailAsync(mail, subject, "Test", TextFormat.Text, name).Wait();
+                Assert.IsTrue(mock.Session.ClientHistory.Contains($"From: {name} <{mail}>"));
+                Assert.IsTrue(mock.Session.ClientHistory.Contains($"To: \"{mail}\" <{name}>"));
+                Assert.IsTrue(mock.Session.ClientHistory.Contains($"RCPT TO:<{name}>"));
+                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
+                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
+            }
+            finally
+            {
+                mock.Stop();
+            }
+        }
+
         public class TestMailKitSmtpMailService : MailKitSmtpMailService
         {
             public TestMailKitSmtpMailService(MailServiceOptions options) : base(options)
