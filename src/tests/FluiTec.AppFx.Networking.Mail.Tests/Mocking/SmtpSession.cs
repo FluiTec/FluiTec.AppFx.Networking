@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 
@@ -21,8 +22,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         public delegate void ExceptionHandler(SmtpSession sender, Exception ex);
         public event ExceptionHandler Error;
 
+        public List<string> ServerHistory { get; set; }
+
+        public List<string> ClientHistory { get; set; }
+
         private void Write(TextWriter sw, string line)
         {
+            ServerHistory.Add(line);
             sw.WriteLine(line);
             Sent?.Invoke(this, line);
         }
@@ -49,6 +55,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
                 while (_socket.Connected)
                 {
                     string line = streamReader.ReadLine();
+
+                    ClientHistory.Add(line);
 
                     if (string.IsNullOrEmpty(line))
                     {
@@ -109,6 +117,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         {
             _socket = socket;
             Id = id;
+            ServerHistory = new List<string>();
+            ClientHistory = new List<string>();
         }
     }
 }

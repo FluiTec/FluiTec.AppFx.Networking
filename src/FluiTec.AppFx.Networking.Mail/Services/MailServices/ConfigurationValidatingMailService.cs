@@ -3,6 +3,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {
@@ -10,11 +11,21 @@ namespace FluiTec.AppFx.Networking.Mail.Services
     /// <seealso cref="FluiTec.AppFx.Networking.Mail.Services.MailKitSmtpMailService" />
     public class ConfigurationValidatingMailService : LoggingMailService
     {
+        #region Fields
+
+        private readonly MailServerCertificateValidationOptions _certificateOptions;
+
+        #endregion
+
         #region Properties
 
         /// <summary>Gets the certificate options.</summary>
         /// <value>The certificate options.</value>
-        public MailServerCertificateValidationOptions CertificateOptions { get; }
+        public MailServerCertificateValidationOptions CertificateOptions => CertificateOptionsMonitor != null ? CertificateOptionsMonitor.CurrentValue : _certificateOptions;
+
+        /// <summary>Gets the certificate options monitor.</summary>
+        /// <value>The certificate options monitor.</value>
+        public IOptionsMonitor<MailServerCertificateValidationOptions> CertificateOptionsMonitor { get; }
 
         /// <summary>Gets the certificate validation callback.</summary>
         /// <value>The certificate validation callback.</value>
@@ -31,7 +42,20 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
         public ConfigurationValidatingMailService(MailServiceOptions options, ILogger<ConfigurationValidatingMailService> logger, MailServerCertificateValidationOptions certificateOptions) : base(options, logger)
         {
-            CertificateOptions = certificateOptions ?? throw new ArgumentNullException(nameof(certificateOptions));
+            _certificateOptions = certificateOptions ?? throw new ArgumentNullException(nameof(certificateOptions));
+            CertificateValidationCallback = ValidateCertificate;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ConfigurationValidatingMailService"/> class.</summary>
+        /// <param name="optionsMonitor">The optionsMonitor.</param>
+        /// <param name="logger">The logger to use.</param>
+        /// <param name="certificateOptionsMonitor">The certificateOptionsMonitor</param>
+        /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
+        public ConfigurationValidatingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
+            ILogger<ConfigurationValidatingMailService> logger,
+            IOptionsMonitor<MailServerCertificateValidationOptions> certificateOptionsMonitor) : base(optionsMonitor, logger)
+        {
+            CertificateOptionsMonitor = certificateOptionsMonitor ?? throw new ArgumentNullException(nameof(certificateOptionsMonitor));
             CertificateValidationCallback = ValidateCertificate;
         }
 

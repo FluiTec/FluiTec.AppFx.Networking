@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
@@ -23,6 +24,15 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
         protected LoggingMailService(MailServiceOptions options, ILogger<LoggingMailService> logger) : base(options)
+        {
+            Logger = logger; // we accept null here
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="LoggingMailService"/> class.</summary>
+        /// <param name="optionsMonitor">The optionsMonitor.</param>
+        /// <param name="logger">The logger.</param>
+        protected LoggingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
+            ILogger<LoggingMailService> logger) : base(optionsMonitor)
         {
             Logger = logger; // we accept null here
         }

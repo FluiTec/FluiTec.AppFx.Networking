@@ -2,8 +2,11 @@
 using System.Net.Security;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
+using FluiTec.AppFx.Options.Exceptions;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using MimeKit.Text;
 
@@ -13,11 +16,21 @@ namespace FluiTec.AppFx.Networking.Mail.Services
     /// <seealso cref="FluiTec.AppFx.Networking.Mail.Services.IMailService" />
     public abstract class MailKitSmtpMailService : IMailService
     {
+        #region Fields
+
+        private readonly MailServiceOptions _options;
+
+        #endregion
+
         #region Properties
+
+        /// <summary>Gets the optionsMonitor.</summary>
+        /// <value>The optionsMonitor.</value>
+        protected IOptionsMonitor<MailServiceOptions> OptionsMonitor { get; }
 
         /// <summary>Gets the options.</summary>
         /// <value>The options.</value>
-        public MailServiceOptions Options { get; }
+        public MailServiceOptions Options => OptionsMonitor != null ? OptionsMonitor.CurrentValue : _options;
 
         /// <summary>Gets the certificate validation callback.</summary>
         /// <value>The certificate validation callback.</value>
@@ -31,7 +44,17 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="options">The options.</param>
         protected MailKitSmtpMailService(MailServiceOptions options)
         {
-            Options = options ?? throw new ArgumentNullException(nameof(options));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            ValidateOptions(options);
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService"/> class.</summary>
+        /// <param name="optionsMonitor">The optionsMonitor.</param>
+        protected MailKitSmtpMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor)
+        {
+            OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
+            ValidateOptions(optionsMonitor.CurrentValue);
+            OptionsMonitor.OnChange(ValidateOptions);
         }
 
         #endregion
@@ -146,6 +169,13 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
                 await client.DisconnectAsync(true);
             }
+        }
+
+        private void ValidateOptions(MailServiceOptions options)
+        {
+            var validationResult = new MailServiceOptionsValidator().Validate(options);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult, typeof(MailServiceOptions), "Invalid settings.");
         }
 
         #endregion

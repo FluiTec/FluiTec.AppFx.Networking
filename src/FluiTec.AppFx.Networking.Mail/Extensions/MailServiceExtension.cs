@@ -7,6 +7,7 @@ using FluiTec.AppFx.Networking.Mail.Services;
 using FluiTec.AppFx.Options.Managers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using RazorLight;
 using RazorLight.Razor;
 
@@ -28,7 +29,10 @@ namespace Microsoft.Extensions.DependencyInjection
             manager.ConfigureValidator(new MailServiceOptionsValidator());
             services.Configure<MailServiceOptions>(manager);
             services.Configure<MailServerCertificateValidationOptions>(manager);
-            services.AddScoped<IMailService, ConfigurationValidatingMailService>();
+            services.AddScoped<IMailService, ConfigurationValidatingMailService>(provider => new ConfigurationValidatingMailService(
+                provider.GetRequiredService<IOptionsMonitor<MailServiceOptions>>(), 
+                provider.GetService<ILogger<ConfigurationValidatingMailService>>() , 
+                provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>()));
             return services;
         }
 

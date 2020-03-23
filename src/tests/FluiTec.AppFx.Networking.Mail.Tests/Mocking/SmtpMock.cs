@@ -48,6 +48,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         public event SmtpSession.DataHandler Sent;
         public event SmtpSession.EndHandler End;
 
+        public SmtpSession Session { get; private set; }
+
         /// <summary>
         /// run server
         /// </summary>
@@ -68,12 +70,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
                     {
                         var clientSocket = _smtpListener.AcceptSocket();
                         Connect?.Invoke(this, clientSocket);
-                        var session = new SmtpSession(clientSocket, count);
-                        session.Error += session_Error;
-                        session.Sent += session_Sent;
-                        session.Received += session_Received;
-                        session.End += session_End;
-                        var sessionThread = new Thread(session.Process);
+                        Session = new SmtpSession(clientSocket, count);
+                        Session.Error += session_Error;
+                        Session.Sent += session_Sent;
+                        Session.Received += session_Received;
+                        Session.End += session_End;
+                        var sessionThread = new Thread(Session.Process);
                         sessionThread.Start();
                         count++;
                     }
