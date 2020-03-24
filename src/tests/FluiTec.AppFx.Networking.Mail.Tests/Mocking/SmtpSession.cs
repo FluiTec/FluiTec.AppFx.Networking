@@ -20,8 +20,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         #region Properties
 
         public int Id { get; }
-        public List<string> ServerHistory { get; set; }
-        public List<string> ClientHistory { get; set; }
+        public List<string> History { get; set; }
 
         #endregion
 
@@ -37,8 +36,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         {
             _socket = socket;
             Id = id;
-            ServerHistory = new List<string>();
-            ClientHistory = new List<string>();
+            History = new List<string>();
             _serverName = serverName;
         }
 
@@ -62,7 +60,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
         private void Write(TextWriter sw, string line)
         {
-            ServerHistory.Add(line);
+            History.Add(line);
             sw.WriteLine(line);
             Sent?.Invoke(this, line);
         }
@@ -88,7 +86,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
                 {
                     string line = streamReader.ReadLine();
 
-                    ClientHistory.Add(line);
+                    History.Add(line);
 
                     if (string.IsNullOrEmpty(line))
                     {

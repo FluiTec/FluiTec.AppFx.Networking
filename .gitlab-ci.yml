@@ -22,5 +22,4 @@ build:
 test:
     stage: test
     script:
-        - "dotnet test -t -d log.txt"
-        - "find . -print -name 'log*.txt' -exec cat {} +"
+        - "dotnet test -t"

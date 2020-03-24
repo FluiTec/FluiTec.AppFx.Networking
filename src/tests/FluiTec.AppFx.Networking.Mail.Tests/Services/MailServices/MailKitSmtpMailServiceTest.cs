@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Net;
 using System.Net.Security;
-using System.Net.Sockets;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
 using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
@@ -30,18 +27,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         }
 
         [TestMethod]
-        public void CanOpenPort()
-        {
-            var listener = new TcpListener(IPAddress.Any, 25);
-            listener.Start();
-            listener.Stop();
-
-            Console.WriteLine("Console Console World");
-            Trace.WriteLine("Trace Trace World");
-            Debug.WriteLine("Debug Debug World");
-        }
-
-        [TestMethod]
         public void CanSendMail()
         {
             const string mail = "test@example.com";
@@ -57,14 +42,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                 {
                     SmtpServer = "127.0.0.1",
                     SmtpPort = smtpPort,
-                    FromName = "Test", FromMail = mail
+                    FromName = name, FromMail = mail
                 });
                 service.SendEmail(mail, subject, "Test", TextFormat.Text, name);
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"From: {name} <{mail}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"To: \"{mail}\" <{name}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"RCPT TO:<{name}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
+                Assert.IsTrue(mock.Session.History.Contains($"From: {name} <{mail}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"To: \"{mail}\" <{name}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"RCPT TO:<{name}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"Subject: {subject}"));
+                Assert.IsTrue(mock.Session.History.LastIndexOf("250 OK") > 
+                              mock.Session.History.FindLastIndex(s => s.Contains($"Subject: {subject}")));
             }
             finally
             {
@@ -72,7 +58,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             }
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CanSendMailAsync()
         {
             const string mail = "test@example.com";
@@ -88,14 +74,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                 {
                     SmtpPort = smtpPort,
                     SmtpServer = "127.0.0.1",
-                    FromName = "Test", FromMail = mail
+                    FromName = name, FromMail = mail
                 });
                 service.SendEmailAsync(mail, subject, "Test", TextFormat.Text, name).Wait();
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"From: {name} <{mail}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"To: \"{mail}\" <{name}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"RCPT TO:<{name}>"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
-                Assert.IsTrue(mock.Session.ClientHistory.Contains($"Subject: {subject}"));
+                Assert.IsTrue(mock.Session.History.Contains($"From: {name} <{mail}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"To: \"{mail}\" <{name}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"RCPT TO:<{name}>"));
+                Assert.IsTrue(mock.Session.History.Contains($"Subject: {subject}"));
+                Assert.IsTrue(mock.Session.History.LastIndexOf("250 OK") > 
+                              mock.Session.History.FindLastIndex(s => s.Contains($"Subject: {subject}")));
             }
             finally
             {
