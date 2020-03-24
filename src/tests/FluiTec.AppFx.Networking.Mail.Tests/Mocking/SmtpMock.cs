@@ -14,7 +14,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
         private TcpListener _smtpListener;
         private Thread _smtpServerThread;
-        private readonly int _port;
         private readonly string _serverName;
 
         #endregion
@@ -23,13 +22,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
 
         public SmtpSession Session { get; private set; }
 
+        public int Port { get; }
+
         #endregion
 
         #region Constructors
 
         public SmtpMock(int port = 25, string serverName = "coolcat.de")
         {
-            _port = port;
+            Port = port;
             _serverName = serverName;
         }
 
@@ -87,12 +88,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
         {
             try
             {
-                _smtpListener = new TcpListener(IPAddress.Any, _port); // open listener for port 
+                _smtpListener = new TcpListener(IPAddress.Any, Port); // open listener for port 
                 _smtpListener.Start();
 
                 Started?.Invoke(this, _smtpListener);
 
-                int count = 1;
+                var count = 1;
 
                 try
                 {
