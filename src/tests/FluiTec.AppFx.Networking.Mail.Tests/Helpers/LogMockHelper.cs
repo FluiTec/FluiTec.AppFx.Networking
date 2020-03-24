@@ -23,7 +23,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
                 It.IsAny<EventId>(),
                 It.Is<It.IsAnyType>((o, t) => MatchesLogValues(o, expectedMessage, expectedValues)),
                 It.IsAny<Exception>(),
-                It.IsAny<Func<object, Exception, string>>()
+                (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
                 )
             );
         }

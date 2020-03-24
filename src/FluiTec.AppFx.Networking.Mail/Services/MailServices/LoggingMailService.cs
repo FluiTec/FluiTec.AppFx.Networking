@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
@@ -58,6 +59,16 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="message">The message.</param>
         protected override void SendMail(MimeMessage message)
         {
+            try
+            {
+                throw new ArgumentNullException();
+            }
+            catch (ArgumentNullException e)
+            {
+                Logger?.LogError(e, "Test");
+                throw;
+            }
+
             Logger?.LogInformation($"Sending mail. Subject: {message.Subject}, Recipients:");
             foreach(var r in message.To)
                 Logger?.LogInformation($"- {r}");
