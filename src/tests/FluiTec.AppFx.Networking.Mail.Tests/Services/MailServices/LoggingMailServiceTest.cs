@@ -11,7 +11,7 @@ using Moq;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 {
-    [TestClass]
+    //[TestClass]
     public class LoggingMailServiceTest : MailKitSmtpMailServiceTest
     {
         [TestMethod]
