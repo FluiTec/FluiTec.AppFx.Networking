@@ -73,9 +73,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             var message = new MimeMessage
             {
                 From = { new MailboxAddress(Options.FromName, Options.FromMail)},
-                To = { new MailboxAddress(recipient, recipientName ?? recipient)},
+                To = { new MailboxAddress(recipientName ?? recipient, recipient) },
                 Subject = subject,
-                Body = new TextPart(format)
+                Body = new TextPart(format) { Text = content }
             };
 
             SendMail(message);
@@ -95,9 +95,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             var message = new MimeMessage
             {
                 From = { new MailboxAddress(Options.FromName, Options.FromMail) },
-                To = { new MailboxAddress(recipient, recipientName ?? recipient) },
+                To = { new MailboxAddress(recipientName ?? recipient, recipient) },
                 Subject = subject,
-                Body = new TextPart(format)
+                Body = new TextPart(format) { Text = content}
             };
 
             await SendMailAsync(message);

@@ -16,9 +16,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         {
             var unused = new TestLoggingMailService(new MailServiceOptions
             {
-                SmtpServer = SmtpServer,
+                SmtpServer = GlobalTestSettings.SmtpServer,
                 SmtpPort = 25,
-                FromName = SmtpName, FromMail = SmtpMail
+                FromName = GlobalTestSettings.SmtpName, FromMail = GlobalTestSettings.SmtpMail
             }, null);
         }
 
@@ -32,7 +32,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                 smtpMock.Started = (sender, listener) =>
                 {
                     var service = new TestLoggingMailService(GetTestMailServiceOptions(smtpMock.Port), loggerMock.Object);
-                    service.SendEmail(SmtpMail, MailSubject, MailContent, TextFormat.Text, SmtpName);
+                    service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject, GlobalTestSettings.MailContent, TextFormat.Text, GlobalTestSettings.SmtpName);
                     loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");
                 };
                 smtpMock.Start();
