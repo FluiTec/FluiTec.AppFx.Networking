@@ -9,7 +9,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 {
     /// <summary>Configuration-based certificate-validating MailService using MailKit and Smtp.</summary>
     /// <seealso cref="FluiTec.AppFx.Networking.Mail.Services.MailKitSmtpMailService" />
-    public class ConfigurationValidatingMailService : LoggingMailService
+    public class CertificateValidatingMailService : LoggingMailService
     {
         #region Fields
 
@@ -35,24 +35,24 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="ConfigurationValidatingMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger to use.</param>
         /// <param name="certificateOptions"></param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
-        public ConfigurationValidatingMailService(MailServiceOptions options, ILogger<ConfigurationValidatingMailService> logger, MailServerCertificateValidationOptions certificateOptions) : base(options, logger)
+        public CertificateValidatingMailService(MailServiceOptions options, ILogger<CertificateValidatingMailService> logger, MailServerCertificateValidationOptions certificateOptions) : base(options, logger)
         {
             _certificateOptions = certificateOptions ?? throw new ArgumentNullException(nameof(certificateOptions));
             CertificateValidationCallback = ValidateCertificate;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="ConfigurationValidatingMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
         /// <param name="logger">The logger to use.</param>
         /// <param name="certificateOptionsMonitor">The certificateOptionsMonitor</param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
-        public ConfigurationValidatingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
-            ILogger<ConfigurationValidatingMailService> logger,
+        public CertificateValidatingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
+            ILogger<CertificateValidatingMailService> logger,
             IOptionsMonitor<MailServerCertificateValidationOptions> certificateOptionsMonitor) : base(optionsMonitor, logger)
         {
             CertificateOptionsMonitor = certificateOptionsMonitor ?? throw new ArgumentNullException(nameof(certificateOptionsMonitor));

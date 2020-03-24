@@ -1,5 +1,4 @@
-﻿using System;
-using FluiTec.AppFx.Networking.Mail.Configuration;
+﻿using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using Microsoft.Extensions.Logging;

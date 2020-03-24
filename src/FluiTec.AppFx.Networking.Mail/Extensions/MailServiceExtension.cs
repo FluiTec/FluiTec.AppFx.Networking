@@ -29,9 +29,9 @@ namespace Microsoft.Extensions.DependencyInjection
             manager.ConfigureValidator(new MailServiceOptionsValidator());
             services.Configure<MailServiceOptions>(manager);
             services.Configure<MailServerCertificateValidationOptions>(manager);
-            services.AddScoped<IMailService, ConfigurationValidatingMailService>(provider => new ConfigurationValidatingMailService(
+            services.AddScoped<IMailService, CertificateValidatingMailService>(provider => new CertificateValidatingMailService(
                 provider.GetRequiredService<IOptionsMonitor<MailServiceOptions>>(), 
-                provider.GetService<ILogger<ConfigurationValidatingMailService>>() , 
+                provider.GetService<ILogger<CertificateValidatingMailService>>() , 
                 provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>()));
             return services;
         }
