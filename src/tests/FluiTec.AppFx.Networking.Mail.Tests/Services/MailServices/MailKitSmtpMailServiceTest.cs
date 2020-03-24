@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
@@ -75,12 +74,44 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var smtpMock = GetSmtpMock();
             try
             {
-                smtpMock.Start();
                 smtpMock.Started = (sender, listener) =>
                 {
                     var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(smtpMock.Port));
                     service.SendEmail(SmtpMail, MailSubject, MailContent, TextFormat.Plain, SmtpName);
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"From: {SmtpName} <{SmtpMail}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"To: \"{SmtpMail}\" <{SmtpName}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"RCPT TO:<{SmtpName}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"Subject: {MailSubject}"));
+                    Assert.IsTrue(smtpMock.Session.History.LastIndexOf("250 OK") >
+                                  smtpMock.Session.History.FindLastIndex(s => s.Contains($"Subject: {MailSubject}")));
                 };
+                smtpMock.Start();
+            }
+            finally
+            {
+                smtpMock.Stop();
+            }
+        }
+
+        [TestMethod]
+        public void CanSendMailAsync()
+        {
+            var smtpMock = GetSmtpMock();
+            try
+            {
+                smtpMock.Started = (sender, listener) =>
+                {
+                    var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(smtpMock.Port));
+                    service.SendEmailAsync(SmtpMail, MailSubject, MailContent, TextFormat.Plain, SmtpName).Wait();
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"From: {SmtpName} <{SmtpMail}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"To: \"{SmtpMail}\" <{SmtpName}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"RCPT TO:<{SmtpName}>"));
+                    Assert.IsTrue(smtpMock.Session.History.Contains($"Subject: {MailSubject}"));
+                    Assert.IsTrue(smtpMock.Session.History.LastIndexOf("250 OK") >
+                                  smtpMock.Session.History.FindLastIndex(s => s.Contains($"Subject: {MailSubject}")));
+                    throw new Exception();
+                };
+                smtpMock.Start();
             }
             finally
             {
