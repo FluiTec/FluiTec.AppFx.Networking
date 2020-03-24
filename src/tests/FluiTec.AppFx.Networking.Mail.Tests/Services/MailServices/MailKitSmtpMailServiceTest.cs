@@ -34,6 +34,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var listener = new TcpListener(IPAddress.Any, 25);
             listener.Start();
             listener.Stop();
+            System.Diagnostics.Debug.WriteLine("Test");
         }
 
         //[TestMethod]
