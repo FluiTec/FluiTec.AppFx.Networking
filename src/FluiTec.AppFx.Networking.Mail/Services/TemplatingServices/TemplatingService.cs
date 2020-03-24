@@ -1,16 +1,29 @@
 ﻿using System;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
+using FluiTec.AppFx.Options.Exceptions;
+using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {
     /// <summary>A templating service.</summary>
     public abstract class TemplatingService : ITemplatingService
     {
+        #region Fields
+
+        private readonly MailTemplateOptions _options;
+
+        #endregion
+
         #region Properties
+
+        /// <summary>Gets the optionsMonitor.</summary>
+        /// <value>The optionsMonitor.</value>
+        protected IOptionsMonitor<MailTemplateOptions> OptionsMonitor { get; }
 
         /// <summary>Gets the options.</summary>
         /// <value>The options.</value>
-        public MailTemplateOptions Options { get; }
+        public MailTemplateOptions Options => OptionsMonitor != null ? OptionsMonitor.CurrentValue : _options;
 
         #endregion
 
@@ -21,7 +34,17 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <exception cref="ArgumentNullException">options</exception>
         protected TemplatingService(MailTemplateOptions options)
         {
-            Options = options ?? throw new ArgumentNullException(nameof(options));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            ValidateOptions(options);
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
+        /// <param name="optionsMonitor">The options monitor.</param>
+        protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor)
+        {
+            OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
+            ValidateOptions(optionsMonitor.CurrentValue);
+            OptionsMonitor.OnChange(ValidateOptions);
         }
 
         #endregion
@@ -51,6 +74,13 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         {
             var modelType = typeof(TModel);
             return $"{modelType.Name}{Options.Extension}";
+        }
+
+        private static void ValidateOptions(MailTemplateOptions options)
+        {
+            var validationResult = new MailTemplateOptionsValidator().Validate(options);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult, typeof(MailServiceOptions), "Invalid settings.");
         }
 
         #endregion
