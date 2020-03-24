@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
