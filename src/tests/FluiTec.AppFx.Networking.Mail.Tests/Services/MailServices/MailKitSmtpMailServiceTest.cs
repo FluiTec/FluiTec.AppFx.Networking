@@ -16,7 +16,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         protected const string SmtpSubject = "Test";
         protected const string SmtpServer = "127.0.0.1";
 
-        private static int _lastPort = 49999;
+        private int _lastPort = 49999;
 
         protected int GetSmtpPort()
         {
@@ -38,7 +38,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "localhost"});
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CanSendMail()
         {
             int port = GetSmtpPort();
