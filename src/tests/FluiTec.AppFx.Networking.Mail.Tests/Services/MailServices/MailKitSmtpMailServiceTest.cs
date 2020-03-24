@@ -35,13 +35,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [ExpectedException(typeof(ValidationException))]
         public void ThrowsOnInvalidOptions()
         {
-            var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "localhost"});
+            var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "127.0.0.1"});
         }
 
         [TestMethod]
         public void CanSendMail()
         {
-            int port = GetSmtpPort();
+            int port = 25;//GetSmtpPort();
 
             var mock = new SmtpMock(port);
             mock.Start();
