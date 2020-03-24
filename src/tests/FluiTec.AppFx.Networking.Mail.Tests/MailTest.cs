@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using MailKit.Net.Smtp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit;
@@ -13,21 +15,18 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
         [TestMethod]
         public void DoMailTest()
         {
-            var server = SimpleSmtpServer.Start(25);
-
-            using (var client = new SmtpClient())
+            var port = 25;
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestMailKitSmtpMailService(new MailServiceOptions
             {
-                client.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true; // accepts all certs
-                client.Connect("127.0.0.1", 25, false);
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
-                client.Send(new MimeMessage
-                {
-                    From = { new MailboxAddress("Test", "test@example.com") },
-                    To = { new MailboxAddress("Test", "test@example.com") },
-                    Subject = GlobalTestSettings.MailSubject,
-                    Body = new TextPart(TextFormat.Plain) { Text = GlobalTestSettings.MailContent }
-                });
-            }
+                FromMail = GlobalTestSettings.SmtpMail,
+                FromName = GlobalTestSettings.SmtpName,
+                SmtpPort = port,
+                SmtpServer = "127.0.0.1"
+            });
+            service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
+            server.Stop();
 
             var email = server.ReceivedEmail.Single();
             Assert.AreEqual(GlobalTestSettings.SmtpMail, email.To.Single().Address);
