@@ -2,6 +2,7 @@
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using FluiTec.AppFx.Options.Exceptions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
@@ -25,25 +26,31 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <value>The options.</value>
         public MailTemplateOptions Options => OptionsMonitor != null ? OptionsMonitor.CurrentValue : _options;
 
+        /// <summary>Gets the logger.</summary>
+        /// <value>The logger.</value>
+        protected ILogger<TemplatingService> Logger { get; }
+
         #endregion
 
         #region Constructors
 
         /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
         /// <param name="options">The options.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">options</exception>
-        protected TemplatingService(MailTemplateOptions options)
+        protected TemplatingService(MailTemplateOptions options, ILogger<TemplatingService> logger)
         {
+            Logger = logger; // we accept null here
             _options = options ?? throw new ArgumentNullException(nameof(options));
             ValidateOptions(options);
         }
 
         /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
         /// <param name="optionsMonitor">The options monitor.</param>
-        protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor)
+        /// <param name="logger">The logger.</param>
+        protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor, ILogger<TemplatingService> logger) : this(optionsMonitor.CurrentValue, logger)
         {
-            OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
-            ValidateOptions(optionsMonitor.CurrentValue);
+            OptionsMonitor = optionsMonitor;
             OptionsMonitor.OnChange(ValidateOptions);
         }
 
@@ -57,6 +64,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <returns>A string.</returns>
         public virtual string Parse<TModel>(TModel model) where TModel : IMailModel
         {
+            Logger?.LogDebug($"Parsing model '{typeof(TModel).Name}'.");
             return Parse(GetViewName<TModel>(), model);
         }
 
@@ -73,7 +81,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         protected virtual string GetViewName<TModel>()
         {
             var modelType = typeof(TModel);
-            return $"{modelType.Name}{Options.Extension}";
+            var result = $"{modelType.Name}{Options.Extension}";
+            Logger?.LogDebug($"ViewName of '{typeof(TModel).Name}' is '{result}'.");
+            return result;
         }
 
         private static void ValidateOptions(MailTemplateOptions options)

@@ -1,5 +1,6 @@
 ﻿using System;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using Microsoft.Extensions.Logging;
 using RazorLight;
 
 namespace FluiTec.AppFx.Networking.Mail.Services
@@ -13,8 +14,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <summary>Specialized constructor for use only by derived class.</summary>
         /// <param name="engine">The engine.</param>
         /// <param name="options">The options to use.</param>
+        /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-        public RazorLightTemplatingService(IRazorLightEngine engine, MailTemplateOptions options) : base(options)
+        public RazorLightTemplatingService(IRazorLightEngine engine, MailTemplateOptions options, ILogger<RazorLightTemplatingService> logger) : base(options, logger)
         {
             Engine = engine ?? throw new ArgumentNullException(nameof(engine));
         }
@@ -26,6 +28,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <returns>	A string. </returns>
         public override string Parse<TModel>(string viewName, TModel model)
         {
+            Logger?.LogInformation($"Parsing view '{viewName}' for model '{typeof(TModel).Name}'.");
             return Engine.CompileRenderAsync(viewName, model).Result;
         }
     }

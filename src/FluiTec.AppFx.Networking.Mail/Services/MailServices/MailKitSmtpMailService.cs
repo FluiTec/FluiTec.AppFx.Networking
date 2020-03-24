@@ -50,10 +50,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService"/> class.</summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
-        protected MailKitSmtpMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor)
+        protected MailKitSmtpMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor) : this(optionsMonitor.CurrentValue)
         {
-            OptionsMonitor = optionsMonitor ?? throw new ArgumentNullException(nameof(optionsMonitor));
-            ValidateOptions(optionsMonitor.CurrentValue);
+            OptionsMonitor = optionsMonitor;
             OptionsMonitor.OnChange(ValidateOptions);
         }
 
