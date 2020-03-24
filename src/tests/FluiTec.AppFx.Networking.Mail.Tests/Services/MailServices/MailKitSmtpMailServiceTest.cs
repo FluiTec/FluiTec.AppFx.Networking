@@ -36,14 +36,17 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             try
             {
                 smtpMock.Start();
-                var service = new TestMailKitSmtpMailService(new MailServiceOptions
+                smtpMock.Started = (sender, listener) =>
                 {
-                    FromMail = "test@example.com",
-                    FromName = "Test",
-                    SmtpServer = SmtpServer,
-                    SmtpPort = 25
-                });
-                service.SendEmail("test@example.com", "TestSubject", "TestContent", TextFormat.Plain, "Test");
+                    var service = new TestMailKitSmtpMailService(new MailServiceOptions
+                    {
+                        FromMail = "test@example.com",
+                        FromName = "Test",
+                        SmtpServer = SmtpServer,
+                        SmtpPort = 25
+                    });
+                    service.SendEmail("test@example.com", "TestSubject", "TestContent", TextFormat.Plain, "Test");
+                };
             }
             finally
             {
