@@ -24,24 +24,24 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 
         #region Fields
 
-        private int _lastPort = 49999;
+        private static int _lastPort = 49999;
 
         #endregion
 
         #region Methods
 
-        private int GetFreePort()
+        private static int GetFreePort()
         {
             _lastPort++;
             return _lastPort;
         }
 
-        protected SmtpMock GetSmtpMock()
+        internal static SmtpMock GetSmtpMock()
         {
             return new SmtpMock(GetFreePort(), SmtpServerName);
         }
 
-        protected MailServiceOptions GetTestMailServiceOptions(int port)
+        internal static MailServiceOptions GetTestMailServiceOptions(int port)
         {
             return new MailServiceOptions
             {
