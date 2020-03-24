@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Net.Security;
+using System.Net.Sockets;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
 using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
@@ -27,6 +29,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         }
 
         [TestMethod]
+        public void CanOpenPort()
+        {
+            var listener = new TcpListener(IPAddress.Any, 25);
+            listener.Start();
+            listener.Stop();
+        }
+
+        //[TestMethod]
         public void CanSendMail()
         {
             const string mail = "test@example.com";
@@ -57,7 +67,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             }
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void CanSendMailAsync()
         {
             const string mail = "test@example.com";
