@@ -10,12 +10,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void DoesNotThrowOnEmptyLogger()
         {
-            int port = GetSmtpPort();
-            
             var unused = new TestLoggingMailService(new MailServiceOptions
             {
                 SmtpServer = SmtpServer,
-                SmtpPort = port,
+                SmtpPort = 25,
                 FromName = SmtpName, FromMail = SmtpMail
             }, null);
         }
