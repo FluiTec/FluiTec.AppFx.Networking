@@ -62,8 +62,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMail2()
         {
-            var server = SimpleSmtpServer.Start(SimpleSmtpServer.DEFAULT_SMTP_PORT);
-            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(SimpleSmtpServer.DEFAULT_SMTP_PORT));
+            var port = GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
             service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
                 GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
             MailAssertHelper.VerifySuccessfulMail(server);
