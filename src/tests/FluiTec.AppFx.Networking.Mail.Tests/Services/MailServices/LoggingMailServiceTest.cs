@@ -27,7 +27,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             }, null);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void TestLogging()
         {
             int port = 25;//GetSmtpPort();
