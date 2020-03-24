@@ -41,7 +41,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             Debug.WriteLine("Debug Debug World");
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void CanSendMail()
         {
             const string mail = "test@example.com";
@@ -55,7 +55,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             {
                 var service = new TestMailKitSmtpMailService(new MailServiceOptions
                 {
-                    SmtpServer = "localhost",
+                    SmtpServer = "127.0.0.1",
                     SmtpPort = smtpPort,
                     FromName = "Test", FromMail = mail
                 });
@@ -87,7 +87,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                 var service = new TestMailKitSmtpMailService(new MailServiceOptions
                 {
                     SmtpPort = smtpPort,
-                    SmtpServer = "localhost",
+                    SmtpServer = "127.0.0.1",
                     FromName = "Test", FromMail = mail
                 });
                 service.SendEmailAsync(mail, subject, "Test", TextFormat.Text, name).Wait();
