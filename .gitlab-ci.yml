@@ -23,4 +23,4 @@ test:
     stage: test
     script:
         - "dotnet test -t -d log.txt"
-        - "find -name 'log*.txt' -exec cat {} +
+        - "find -name 'log*.txt' -exec cat {} +"
