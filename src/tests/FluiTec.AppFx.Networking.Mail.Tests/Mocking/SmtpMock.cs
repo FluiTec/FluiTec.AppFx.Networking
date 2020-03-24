@@ -68,6 +68,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Mocking
             _smtpServerThread.Start();
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void Wait()
         {
             _smtpServerThread.Join();

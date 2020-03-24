@@ -2,17 +2,12 @@
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices
 {
     public class TestLoggingMailService : LoggingMailService
     {
         public TestLoggingMailService(MailServiceOptions options, ILogger<LoggingMailService> logger) : base(options, logger)
-        {
-        }
-
-        public TestLoggingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor, ILogger<LoggingMailService> logger) : base(optionsMonitor, logger)
         {
         }
 
