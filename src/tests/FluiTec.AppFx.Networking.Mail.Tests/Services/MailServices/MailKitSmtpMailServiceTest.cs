@@ -15,6 +15,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         protected const string SmtpName = "Test";
         protected const string SmtpServer = "127.0.0.1";
 
+        private int _lastPort = 49999;
+
+        protected int GetFreePort()
+        {
+            _lastPort++;
+            return _lastPort;
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingOptions()
@@ -32,7 +40,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMail()
         {
-            var smtpMock = new SmtpMock(25, "example.com");
+            var port = GetFreePort();
+            var smtpMock = new SmtpMock(port, "example.com");
             try
             {
                 smtpMock.Start();
@@ -43,7 +52,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                         FromMail = "test@example.com",
                         FromName = "Test",
                         SmtpServer = SmtpServer,
-                        SmtpPort = 25
+                        SmtpPort = port
                     });
                     service.SendEmail("test@example.com", "TestSubject", "TestContent", TextFormat.Plain, "Test");
                 };
