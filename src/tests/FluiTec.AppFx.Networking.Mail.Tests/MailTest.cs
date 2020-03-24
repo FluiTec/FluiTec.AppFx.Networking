@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using System.Linq;
+using MailKit.Net.Smtp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit;
 using MimeKit.Text;
@@ -23,10 +24,20 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
                 {
                     From = { new MailboxAddress("Test", "test@example.com") },
                     To = { new MailboxAddress("Test", "test@example.com") },
-                    Subject = "Subject",
-                    Body = new TextPart(TextFormat.Plain)
+                    Subject = GlobalTestSettings.MailSubject,
+                    Body = new TextPart(TextFormat.Plain) { Text = GlobalTestSettings.MailContent }
                 });
             }
+
+            var email = server.ReceivedEmail.Single();
+            Assert.AreEqual(GlobalTestSettings.SmtpMail, email.To.Single().Address);
+            Assert.AreEqual(GlobalTestSettings.SmtpName, email.To.Single().DisplayName);
+
+            Assert.AreEqual(GlobalTestSettings.SmtpMail, email.From.Address);
+            Assert.AreEqual(GlobalTestSettings.SmtpName, email.From.DisplayName);
+
+            Assert.AreEqual(GlobalTestSettings.MailSubject, email.Subject);
+            Assert.AreEqual(GlobalTestSettings.MailContent, email.Body);
 
             server.Stop();
         }
