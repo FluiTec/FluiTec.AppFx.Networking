@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
@@ -34,7 +35,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var listener = new TcpListener(IPAddress.Any, 25);
             listener.Start();
             listener.Stop();
-            Console.WriteLine("MyTest");
+
+            Console.WriteLine("Console Console World");
+            Trace.WriteLine("Trace Trace World");
+            Debug.WriteLine("Debug Debug World");
         }
 
         //[TestMethod]
