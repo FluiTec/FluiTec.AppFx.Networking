@@ -22,4 +22,4 @@ build:
 test:
     stage: test
     script:
-        - "dotnet test"
+        - "dotnet test --filter FluiTec.AppFx.Networking"
