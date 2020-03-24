@@ -6,6 +6,7 @@ stages:
 
 variables:
     srcDir: "src"
+    projectName: "FluiTec.AppFx.Networking"
     GIT_SUBMODULE_STRATEGY: recursive
     
 before_script:
@@ -22,4 +23,4 @@ build:
 test:
     stage: test
     script:
-        - "dotnet test --filter FluiTec.AppFx.Networking"
+        - "dotnet test --filter $projectName"
