@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq.Expressions;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using FluiTec.AppFx.Options.Exceptions;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit.Text;
+using Moq;
+using Moq.Language.Flow;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 {
@@ -15,6 +19,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         protected const string SmtpName = "Test";
         protected const string SmtpSubject = "Test";
         protected const string SmtpServer = "127.0.0.1";
+
+        private static int _lastPort = 49999;
+
+        protected int GetSmtpPort()
+        {
+            _lastPort++;
+            return _lastPort;
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -33,7 +45,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMail()
         {
-            const int port = 50000;
+            int port = GetSmtpPort();
 
             var mock = new SmtpMock(port);
             mock.Start();
@@ -62,7 +74,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMailAsync()
         {
-            const int port = 50001;
+            int port = GetSmtpPort();
 
             var mock = new SmtpMock(port);
             mock.Start();

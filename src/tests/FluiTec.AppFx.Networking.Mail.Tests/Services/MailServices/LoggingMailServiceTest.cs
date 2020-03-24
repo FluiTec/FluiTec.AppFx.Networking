@@ -1,7 +1,11 @@
-﻿using FluiTec.AppFx.Networking.Mail.Configuration;
+﻿using System;
+using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
+using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MimeKit.Text;
 using Moq;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
@@ -12,10 +16,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void DoesNotThrowOnEmptyLogger()
         {
+            int port = GetSmtpPort();
+            
             var service = new TestLoggingMailService(new MailServiceOptions
             {
                 SmtpServer = SmtpServer,
-                SmtpPort = SmtpPort,
+                SmtpPort = port,
                 FromName = SmtpName, FromMail = SmtpMail
             }, null);
         }
@@ -23,15 +29,29 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void TestLogging()
         {
-            var mock = new Mock<ILogger<TestLoggingMailService>>();
-            var logger = mock.Object;
+            int port = GetSmtpPort();
 
-            var service = new TestLoggingMailService(new MailServiceOptions
+            var logger = new Mock<ILogger<TestLoggingMailService>>();
+
+            var smtpMock = new SmtpMock(port);
+            smtpMock.Start();
+
+            try
             {
-                SmtpServer = SmtpServer,
-                SmtpPort = SmtpPort,
-                FromName = SmtpName, FromMail = SmtpMail
-            }, logger);
+                var service = new TestLoggingMailService(new MailServiceOptions
+                {
+                    SmtpServer = SmtpServer,
+                    SmtpPort = port,
+                    FromName = SmtpName, FromMail = SmtpMail
+                }, logger.Object);
+                service.SendEmail(SmtpMail, SmtpSubject, "Test", TextFormat.Text, SmtpName);
+
+                logger.VerifyLog(LogLevel.Information, "Successfully sent mail.");
+            }
+            finally
+            {
+                smtpMock.Stop();
+            }
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using System.Net.Security;
+﻿using System;
+using System.Linq.Expressions;
+using System.Net.Security;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Services;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Moq;
+using Moq.Language.Flow;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices
 {
