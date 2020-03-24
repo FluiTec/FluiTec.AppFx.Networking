@@ -27,10 +27,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             }, null);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void TestLogging()
         {
-            int port = 25;//GetSmtpPort();
+            int port = GetSmtpPort();
 
             var logger = new Mock<ILogger<TestLoggingMailService>>();
 
@@ -46,13 +46,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                     FromName = SmtpName, FromMail = SmtpMail
                 }, logger.Object);
                 service.SendEmail(SmtpMail, SmtpSubject, "Test", TextFormat.Text, SmtpName);
-
-                
-                //logger.VerifyLog(LogLevel.Information, "Successfully sent mail.");
-            }
-            catch (ArgumentNullException e)
-            {
-                logger.VerifyLog("Test", e);
+                logger.VerifyLog(LogLevel.Information, "Successfully sent mail.");
             }
             finally
             {

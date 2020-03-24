@@ -59,16 +59,6 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="message">The message.</param>
         protected override void SendMail(MimeMessage message)
         {
-            try
-            {
-                throw new ArgumentNullException();
-            }
-            catch (ArgumentNullException e)
-            {
-                Logger?.LogError(e, "Test");
-                throw;
-            }
-
             Logger?.LogInformation($"Sending mail. Subject: {message.Subject}, Recipients:");
             foreach(var r in message.To)
                 Logger?.LogInformation($"- {r}");
