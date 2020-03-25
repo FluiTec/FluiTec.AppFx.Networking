@@ -1,6 +1,7 @@
 image: mcr.microsoft.com/dotnet/core/sdk:3.1
 
 stages:
+    - build
     - test
 
 variables:
@@ -15,11 +16,11 @@ before_script:
     - "dotnet restore"
 
 build:
-    stage: test
+    stage: build
     script:
         - "dotnet build --no-restore"
         
 test:
     stage: test
     script:
-        - "dotnet test --no-restore --no-build --filter $projectName"
+        - "dotnet test --no-restore --filter $projectName"
