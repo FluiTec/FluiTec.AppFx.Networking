@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit.Text;
@@ -26,14 +27,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
                 GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
 
             var email = server.ReceivedEmail.Single();
-            Assert.AreEqual(GlobalTestSettings.SmtpMail, email.To.Single().Address);
-            Assert.AreEqual(GlobalTestSettings.SmtpName, email.To.Single().DisplayName);
+            MailAssertHelper.VerifySuccessfulMail(server);
+            //Assert.AreEqual(GlobalTestSettings.SmtpMail, email.To.Single().Address);
+            //Assert.AreEqual(GlobalTestSettings.SmtpName, email.To.Single().DisplayName);
 
-            Assert.AreEqual(GlobalTestSettings.SmtpMail, email.From.Address);
-            Assert.AreEqual(GlobalTestSettings.SmtpName, email.From.DisplayName);
+            //Assert.AreEqual(GlobalTestSettings.SmtpMail, email.From.Address);
+            //Assert.AreEqual(GlobalTestSettings.SmtpName, email.From.DisplayName);
 
-            Assert.AreEqual(GlobalTestSettings.MailSubject, email.Subject);
-            Assert.AreEqual(GlobalTestSettings.MailContent, email.Body);
+            //Assert.AreEqual(GlobalTestSettings.MailSubject, email.Subject);
+            //Assert.AreEqual(GlobalTestSettings.MailContent, email.Body);
 
             server.Stop();
         }
