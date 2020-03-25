@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using FluiTec.AppFx.Options.Exceptions;
+using MailKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
@@ -108,17 +110,24 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         #region Methods
 
         /// <summary>Gets the client.</summary>
-        /// <returns></returns>
-        protected virtual SmtpClient GetClient()
+        /// <returns>A mailClient implementing IMailTransport.</returns>
+        protected abstract IMailTransport GetMailClient();
+
+
+        /// <summary>Configures the mail client.</summary>
+        /// <param name="mailClient">The mailClient to configure.</param>
+        /// <returns>The configured mailClient.</returns>
+        protected virtual IMailTransport ConfigureMailClient(IMailTransport mailClient)
         {
-            return new SmtpClient();
+            mailClient.Timeout = Options.TimeOut;
+            return mailClient;
         }
 
         /// <summary>Sends the mail.</summary>
         /// <param name="message">The message.</param>
         protected virtual void SendMail(MimeMessage message)
         {
-            using (var client = GetClient())
+            using (var client = ConfigureMailClient(GetMailClient()))
             {
                 client.ServerCertificateValidationCallback = CertificateValidationCallback;
 
@@ -131,9 +140,11 @@ namespace FluiTec.AppFx.Networking.Mail.Services
                     client.Connect(Options.SmtpServer, Options.SmtpPort);
 
                 // authenticate
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
                 if (Options.Authenticate)
+                {
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(Options.Username, Options.Password);
+                }
 
                 // send
                 client.Send(message);
@@ -146,7 +157,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="message">The message.</param>
         protected virtual async Task SendMailAsync(MimeMessage message)
         {
-            using (var client = GetClient())
+            using (var client = ConfigureMailClient(GetMailClient()))
             {
                 client.ServerCertificateValidationCallback = CertificateValidationCallback;
 
@@ -159,9 +170,11 @@ namespace FluiTec.AppFx.Networking.Mail.Services
                     await client.ConnectAsync(Options.SmtpServer, Options.SmtpPort);
 
                 // authenticate
-                client.AuthenticationMechanisms.Remove("XOAUTH2");
                 if (Options.Authenticate)
-                    await client.AuthenticateAsync(Options.Username, Options.Password);
+                {
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate(Options.Username, Options.Password);
+                }
 
                 // send
                 await client.SendAsync(message);

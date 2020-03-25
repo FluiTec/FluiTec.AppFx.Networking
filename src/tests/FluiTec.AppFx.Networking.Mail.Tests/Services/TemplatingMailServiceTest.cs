@@ -7,10 +7,11 @@ using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices.Models;
+using MailKit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using nDumbsterCore.smtp;
 using RazorLight;
+using IMailService = FluiTec.AppFx.Networking.Mail.Services.IMailService;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services
 {
@@ -34,23 +35,23 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
         [TestMethod]
         public void CanSendMailByModel()
         {
+            var mailTransportMock = new Mock<IMailTransport>();
+
             var port = MailKitSmtpMailServiceTest.GetFreePort();
-            var server = SimpleSmtpServer.Start(port);
             var project = new LocationExpandingRazorProject(new[] {new DefaultLocationExpander()}, null,
                 ApplicationHelper.GetMailViewPath());
             var engine =  new RazorLightEngineBuilder()
                 .UseProject(project)
                 .UseMemoryCachingProvider()
                 .Build();
-            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(port));
+            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(), mailTransportMock.Object);
             var templateService = new RazorLightTemplatingService(engine, new MailTemplateOptions(), null);
             var service = new TemplatingMailService(mailService, templateService);
 
             var model = new Test();
             var body = templateService.Parse(model);
             service.SendMail(model, GlobalTestSettings.SmtpMail, GlobalTestSettings.SmtpName);
-            MailAssertHelper.VerifySuccessfulMail(server, body);
-            server.Stop();
+            mailTransportMock.VerifySendMail(body);
         }
     }
 }

@@ -17,6 +17,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration.Validators
                 .When(options => options.Authenticate);
             RuleFor(options => options.Password).NotEmpty()
                 .When(options => options.Authenticate);
+            RuleFor(options => options.TimeOut).InclusiveBetween(1, 100);
         }
     }
 }

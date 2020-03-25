@@ -1,15 +1,15 @@
 ﻿using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
+using MailKit;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit.Text;
 using Moq;
-using nDumbsterCore.smtp;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 {
-    //[TestClass]
+    [TestClass]
     public class LoggingMailServiceTest : MailKitSmtpMailServiceTest
     {
         [TestMethod]
@@ -20,21 +20,19 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
                 SmtpServer = GlobalTestSettings.SmtpServer,
                 SmtpPort = 25,
                 FromName = GlobalTestSettings.SmtpName, FromMail = GlobalTestSettings.SmtpMail
-            }, null);
+            }, null, new Mock<IMailTransport>().Object);
         }
 
         [TestMethod]
         public void TestLogging()
         {
             var loggerMock = new Mock<ILogger<TestLoggingMailService>>();
+            var mailTransportMock = new Mock<IMailTransport>();
 
-            var port = GetFreePort();
-            var server = SimpleSmtpServer.Start(port);
-            var service = new TestLoggingMailService(GetTestMailServiceOptions(port), loggerMock.Object);
+            var service = new TestLoggingMailService(GetTestMailServiceOptions(), loggerMock.Object, mailTransportMock.Object);
             service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
                 GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
             loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");
-            server.Stop();
         }
     }
 }

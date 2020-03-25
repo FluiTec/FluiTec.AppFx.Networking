@@ -2,6 +2,8 @@
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.Factories;
+using MailKit;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -31,6 +33,10 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <value>The certificate validation callback.</value>
         public override RemoteCertificateValidationCallback CertificateValidationCallback { get; }
 
+        /// <summary>Gets the mail client factory.</summary>
+        /// <value>The mail client factory.</value>
+        public IMailTransportFactory MailClientFactory { get; }
+
         #endregion
 
         #region Constructors
@@ -38,23 +44,36 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger to use.</param>
-        /// <param name="certificateOptions"></param>
+        /// <param name="certificateOptions">The certificateOptions.</param>
+        /// <param name="mailClientFactory">The mailClientFactory.</param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
-        public CertificateValidatingMailService(MailServiceOptions options, ILogger<CertificateValidatingMailService> logger, MailServerCertificateValidationOptions certificateOptions) : base(options, logger)
+        public CertificateValidatingMailService(MailServiceOptions options, 
+            ILogger<CertificateValidatingMailService> logger, 
+            MailServerCertificateValidationOptions certificateOptions,
+            IMailTransportFactory mailClientFactory) 
+            : base(options, logger)
         {
+            MailClientFactory = mailClientFactory ?? throw new ArgumentNullException(nameof(mailClientFactory));
             _certificateOptions = certificateOptions ?? throw new ArgumentNullException(nameof(certificateOptions));
             CertificateValidationCallback = ValidateCertificate;
         }
 
-        /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</summary>
+        /// <summary>
+        ///   <para></para>
+        ///   <para>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</para>
+        /// </summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
         /// <param name="logger">The logger to use.</param>
         /// <param name="certificateOptionsMonitor">The certificateOptionsMonitor</param>
+        /// <param name="mailClientFactory">The mailClientFactory.</param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
         public CertificateValidatingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
             ILogger<CertificateValidatingMailService> logger,
-            IOptionsMonitor<MailServerCertificateValidationOptions> certificateOptionsMonitor) : base(optionsMonitor, logger)
+            IOptionsMonitor<MailServerCertificateValidationOptions> certificateOptionsMonitor,
+            IMailTransportFactory mailClientFactory) 
+            : base(optionsMonitor, logger)
         {
+            MailClientFactory = mailClientFactory ?? throw new ArgumentNullException(nameof(mailClientFactory));
             CertificateOptionsMonitor = certificateOptionsMonitor ?? throw new ArgumentNullException(nameof(certificateOptionsMonitor));
             CertificateValidationCallback = ValidateCertificate;
         }
@@ -62,6 +81,13 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         #endregion
 
         #region Methods
+
+        /// <summary>Gets the client.</summary>
+        /// <returns>A mailClient implementing IMailTransport.</returns>
+        protected override IMailTransport GetMailClient()
+        {
+            return MailClientFactory.CreateNew();
+        }
 
         private bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {

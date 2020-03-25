@@ -34,5 +34,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration
             var options = new MailServiceOptions();
             Assert.AreEqual(SecureSocketOptions.None, options.SocketOptions);
         }
+
+        [TestMethod]
+        public void DefaultsTo10SecondTimeout()
+        {
+            var options = new MailServiceOptions();
+            Assert.AreEqual(10, options.TimeOut);
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
+using FluiTec.AppFx.Networking.Mail.Factories;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects;
 using FluiTec.AppFx.Networking.Mail.Services;
@@ -29,10 +30,12 @@ namespace Microsoft.Extensions.DependencyInjection
             manager.ConfigureValidator(new MailServiceOptionsValidator());
             services.Configure<MailServiceOptions>(manager);
             services.Configure<MailServerCertificateValidationOptions>(manager);
+            services.AddSingleton<IMailTransportFactory, MailKitSmtpTransportFactory>();
             services.AddScoped<IMailService, CertificateValidatingMailService>(provider => new CertificateValidatingMailService(
                 provider.GetRequiredService<IOptionsMonitor<MailServiceOptions>>(), 
                 provider.GetService<ILogger<CertificateValidatingMailService>>() , 
-                provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>()));
+                provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>(),
+                provider.GetRequiredService<IMailTransportFactory>()));
             return services;
         }
 

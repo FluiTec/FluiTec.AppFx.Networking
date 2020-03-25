@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using MailKit;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,7 +16,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <summary>Gets the logger.</summary>
         /// <value>The logger.</value>
         protected ILogger<LoggingMailService> Logger { get; }
-
+        
         #endregion
 
         #region Constructors
@@ -41,17 +42,16 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region overrides
 
-        /// <summary>Gets the client.</summary>
-        /// <returns>An SmtpClient with a ProtocolLogger.</returns>
-        protected override SmtpClient GetClient()
+        /// <summary>Configures the mail client.</summary>
+        /// <param name="mailClient">The mailClient to configure.</param>
+        /// <returns>The configured mailClient.</returns>
+        protected override IMailTransport ConfigureMailClient(IMailTransport mailClient)
         {
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            var client = new SmtpClient();
-            client.Connected += (sender, args) => Logger?.LogDebug($"SMTP-Client connected. Host: {args.Host}");
-            client.Authenticated += (sender, args) => Logger?.LogDebug("SMTP-Client authenticated.");
-            client.MessageSent += (sender, args) => Logger?.LogDebug("SMTP-Client sent message.");
-            client.Disconnected += (sender, args) => Logger?.LogDebug("SMTP-Client disconnected.");
-            return client;
+            mailClient.Connected += (sender, args) => Logger?.LogDebug($"SMTP-Client connected. Host: {args.Host}");
+            mailClient.Authenticated += (sender, args) => Logger?.LogDebug("SMTP-Client authenticated.");
+            mailClient.MessageSent += (sender, args) => Logger?.LogDebug("SMTP-Client sent message.");
+            mailClient.Disconnected += (sender, args) => Logger?.LogDebug("SMTP-Client disconnected.");
+            return mailClient;
         }
 
         /// <summary>Sends the mail.</summary>

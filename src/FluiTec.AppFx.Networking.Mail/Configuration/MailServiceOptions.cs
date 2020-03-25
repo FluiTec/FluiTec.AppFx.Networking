@@ -14,6 +14,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
             SmtpPort = 25;
             EnableSsl = false;
             SocketOptions = SecureSocketOptions.None;
+            TimeOut = 10;
         }
 
         /// <summary>	Gets or sets a value indicating whether the authenticate. </summary>
@@ -51,5 +52,9 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
         /// <summary>	Gets or sets the name of from. </summary>
         /// <value>	The name of from. </value>
         public string FromName { get; set; }
+
+        /// <summary>Gets or sets the time out.</summary>
+        /// <value>The time out.</value>
+        public int TimeOut { get; set; }
     }
 }
