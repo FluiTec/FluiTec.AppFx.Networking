@@ -46,7 +46,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices
         {
             var loggerMock = new Mock<ILogger<RazorLightTemplatingService>>();
             var service = new RazorLightTemplatingService(new Mock<IRazorLightEngine>().Object, new MailTemplateOptions(), loggerMock.Object);
-            var parsedTemplate = service.Parse(new Test());
+            var unused = service.Parse(new Test());
             loggerMock.VerifyLog(LogLevel.Debug, $"ViewName of '{typeof(Test).Name}' is '{nameof(Test)}.cshtml'.");
         }
 
@@ -55,7 +55,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices
         {
             var loggerMock = new Mock<ILogger<RazorLightTemplatingService>>();
             var service = new RazorLightTemplatingService(new Mock<IRazorLightEngine>().Object, new MailTemplateOptions(), loggerMock.Object);
-            var parsedTemplate = service.Parse(new Test());
+            var unused = service.Parse(new Test());
             loggerMock.VerifyLog(LogLevel.Debug, $"Parsing model '{typeof(Test).Name}'.");
         }
 
@@ -64,7 +64,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices
         {
             var loggerMock = new Mock<ILogger<RazorLightTemplatingService>>();
             var service = new RazorLightTemplatingService(new Mock<IRazorLightEngine>().Object, new MailTemplateOptions(), loggerMock.Object);
-            var parsedTemplate = service.Parse(new Test());
+            var unused = service.Parse(new Test());
             loggerMock.VerifyLog(LogLevel.Information, $"Parsing view '{nameof(Test)}.cshtml' for model '{typeof(Test).Name}'.");
         }
     }
