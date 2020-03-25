@@ -62,18 +62,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         }
 
         [TestMethod]
-        public void CanSendMail2()
-        {
-            var port = GetFreePort();
-            var server = SimpleSmtpServer.Start(port);
-            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
-            service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
-            MailAssertHelper.VerifySuccessfulMail(server);
-            server.Stop();
-        }
-
-        [TestMethod]
         public void CanSendMail()
         {
             var port = GetFreePort();
@@ -88,21 +76,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [TestMethod]
         public void CanSendMailAsync()
         {
-            var smtpMock = GetSmtpMock();
-            try
-            {
-                smtpMock.Started = (sender, listener) =>
-                {
-                    var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(smtpMock.Port));
-                    service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject, GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
-                    MailAssertHelper.VerifySuccessfulMail(smtpMock);
-                };
-                smtpMock.Start();
-            }
-            finally
-            {
-                smtpMock.Stop();
-            }
+            var port = GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
+            service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
+            MailAssertHelper.VerifySuccessfulMail(server);
+            server.Stop();
         }
     }
 }
