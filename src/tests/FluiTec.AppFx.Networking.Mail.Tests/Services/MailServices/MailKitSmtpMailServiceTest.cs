@@ -1,7 +1,6 @@
 ﻿using System;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
-using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using FluiTec.AppFx.Options.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,15 +20,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 
         #region Methods
 
-        protected static int GetFreePort()
+        internal static int GetFreePort()
         {
             _lastPort++;
             return _lastPort;
-        }
-
-        internal static SmtpMock GetSmtpMock()
-        {
-            return new SmtpMock(GetFreePort(), GlobalTestSettings.SmtpServerName);
         }
 
         internal static MailServiceOptions GetTestMailServiceOptions(int port)

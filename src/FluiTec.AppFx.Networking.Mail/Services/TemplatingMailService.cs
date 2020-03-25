@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
         /// <exception cref="NotImplementedException"></exception>
-        public void SendMail(IMailModel model, string recipient, string recipientName = null)
+        public void SendMail<TModel>(TModel model, string recipient, string recipientName = null) where TModel : IMailModel
         {
             var content = TemplatingService.Parse(model);
             MailService.SendEmail(recipient, model.Subject, content, TextFormat.Html, recipientName);
@@ -51,7 +51,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="templateName">Name of the template.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
-        public void SendMail(IMailModel model, string templateName, string recipient, string recipientName)
+        public void SendMail<TModel>(TModel model, string templateName, string recipient, string recipientName) where TModel : IMailModel
         {
             var content = TemplatingService.Parse(templateName, model);
             MailService.SendEmail(recipient, model.Subject, content, TextFormat.Html, recipientName);
@@ -63,7 +63,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="recipientName">Name of the recipient.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public async Task SendMailAsync(IMailModel model, string recipient, string recipientName = null)
+        public async Task SendMailAsync<TModel>(TModel model, string recipient, string recipientName = null) where TModel : IMailModel
         {
             var content = TemplatingService.Parse(model);
             await MailService.SendEmailAsync(recipient, model.Subject, content, TextFormat.Html, recipientName);
@@ -74,7 +74,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="templateName">Name of the template.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
-        public async Task SendMailAsync(IMailModel model, string templateName, string recipient, string recipientName)
+        public async Task SendMailAsync<TModel>(TModel model, string templateName, string recipient, string recipientName) where TModel : IMailModel
         {
             var content = TemplatingService.Parse(templateName, model);
             await MailService.SendEmailAsync(recipient, model.Subject, content, TextFormat.Html, recipientName);

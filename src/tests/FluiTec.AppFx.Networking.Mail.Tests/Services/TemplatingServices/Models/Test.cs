@@ -4,6 +4,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices.Models
 {
     public class Test : IMailModel
     {
-        public string Subject => "Test";
+        public string Subject => GlobalTestSettings.MailSubject;
     }
 }

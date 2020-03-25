@@ -33,7 +33,7 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
             : base(baseDirectory)
         {
             _expanders = expanders ?? throw new ArgumentNullException(nameof(expanders));
-            _logger = logger;
+            _logger = logger; // we accept null here
         }
 
         #endregion
@@ -52,7 +52,7 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
                     _logger?.LogInformation($"Trying to find MailTemplate {templateKey} in {absolutePath}.");
 
                     if (!File.Exists(absolutePath)) continue;
-                    _logger.LogInformation($"Found MailTemplate {templateKey} in {absolutePath}.");
+                    _logger?.LogInformation($"Found MailTemplate {templateKey} in {absolutePath}.");
                     return Task.FromResult(
                         (RazorLightProjectItem) new FileSystemRazorProjectItem(location,
                             new FileInfo(absolutePath)));

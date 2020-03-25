@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {
@@ -9,21 +10,21 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="model">The model.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
-        void SendMail(IMailModel model, string recipient, string recipientName = null);
+        void SendMail<TModel>(TModel model, string recipient, string recipientName = null) where TModel : IMailModel;
 
         /// <summary>Sends the mail.</summary>
         /// <param name="model">The model.</param>
         /// <param name="templateName">Name of the template.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
-        void SendMail(IMailModel model, string templateName, string recipient, string recipientName);
+        void SendMail<TModel>(TModel model, string templateName, string recipient, string recipientName) where TModel : IMailModel;
 
         /// <summary>Sends the mail asynchronous.</summary>
         /// <param name="model">The model.</param>
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
         /// <returns></returns>
-        Task SendMailAsync(IMailModel model, string recipient, string recipientName = null);
+        Task SendMailAsync<TModel>(TModel model, string recipient, string recipientName = null) where TModel : IMailModel;
 
         /// <summary>Sends the mail asynchronous.</summary>
         /// <param name="model">The model.</param>
@@ -31,6 +32,6 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="recipient">The recipient.</param>
         /// <param name="recipientName">Name of the recipient.</param>
         /// <returns></returns>
-        Task SendMailAsync(IMailModel model, string templateName, string recipient, string recipientName);
+        Task SendMailAsync<TModel>(TModel model, string templateName, string recipient, string recipientName) where TModel : IMailModel;
     }
 }

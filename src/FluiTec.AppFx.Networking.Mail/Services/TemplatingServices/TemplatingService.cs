@@ -82,7 +82,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         {
             var modelType = typeof(TModel);
             var result = $"{modelType.Name}{Options.Extension}";
-            Logger?.LogDebug($"ViewName of '{typeof(TModel).Name}' is '{result}'.");
+            Logger?.LogDebug($"ViewName of '{modelType.Name}' is '{result}'.");
             return result;
         }
 

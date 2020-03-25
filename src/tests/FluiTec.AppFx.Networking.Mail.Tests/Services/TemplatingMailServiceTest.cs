@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Threading;
 using FluiTec.AppFx.Networking.Mail.Configuration;
+using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders;
+using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects;
 using FluiTec.AppFx.Networking.Mail.Services;
 using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices;
@@ -8,6 +9,7 @@ using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.TemplatingServices.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using nDumbsterCore.smtp;
 using RazorLight;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services
@@ -32,26 +34,23 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
         [TestMethod]
         public void CanSendMailByModel()
         {
-            var smtpMock = MailKitSmtpMailServiceTest.GetSmtpMock();
-            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(smtpMock.Port));
-            var templateService = new RazorLightTemplatingService(new Mock<IRazorLightEngine>().Object, new MailTemplateOptions(), null);
+            var port = MailKitSmtpMailServiceTest.GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var project = new LocationExpandingRazorProject(new[] {new DefaultLocationExpander()}, null,
+                ApplicationHelper.GetMailViewPath());
+            var engine =  new RazorLightEngineBuilder()
+                .UseProject(project)
+                .UseMemoryCachingProvider()
+                .Build();
+            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(port));
+            var templateService = new RazorLightTemplatingService(engine, new MailTemplateOptions(), null);
             var service = new TemplatingMailService(mailService, templateService);
 
-            try
-            {
-                smtpMock.Started = (sender, listener) =>
-                {
-                    var model = new Test();
-                    service.SendMail(model, GlobalTestSettings.SmtpMail, GlobalTestSettings.SmtpName);
-                    MailAssertHelper.VerifySuccessfulMail(smtpMock);
-                };
-                smtpMock.Start();
-                Thread.SpinWait(10000);
-            }
-            finally
-            {
-                smtpMock.Stop();
-            }
+            var model = new Test();
+            var body = templateService.Parse(model);
+            service.SendMail(model, GlobalTestSettings.SmtpMail, GlobalTestSettings.SmtpName);
+            MailAssertHelper.VerifySuccessfulMail(server, body);
+            server.Stop();
         }
     }
 }
