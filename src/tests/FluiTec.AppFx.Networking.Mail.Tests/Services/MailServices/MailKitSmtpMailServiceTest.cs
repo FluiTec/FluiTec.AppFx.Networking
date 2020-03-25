@@ -4,9 +4,7 @@ using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using FluiTec.AppFx.Networking.Mail.Tests.Mocking;
 using FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices;
 using FluiTec.AppFx.Options.Exceptions;
-using MailKit.Net.Smtp;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MimeKit;
 using MimeKit.Text;
 using nDumbsterCore.smtp;
 
@@ -23,7 +21,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 
         #region Methods
 
-        private static int GetFreePort()
+        protected static int GetFreePort()
         {
             _lastPort++;
             return _lastPort;

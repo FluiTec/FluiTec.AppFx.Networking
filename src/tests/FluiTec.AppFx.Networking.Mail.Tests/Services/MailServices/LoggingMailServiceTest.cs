@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MimeKit.Text;
 using Moq;
+using nDumbsterCore.smtp;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 {
@@ -26,21 +27,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         public void TestLogging()
         {
             var loggerMock = new Mock<ILogger<TestLoggingMailService>>();
-            var smtpMock = GetSmtpMock();
-            try
-            {
-                smtpMock.Started = (sender, listener) =>
-                {
-                    var service = new TestLoggingMailService(GetTestMailServiceOptions(smtpMock.Port), loggerMock.Object);
-                    service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject, GlobalTestSettings.MailContent, TextFormat.Text, GlobalTestSettings.SmtpName);
-                    loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");
-                };
-                smtpMock.Start();
-            }
-            finally
-            {
-                smtpMock.Stop();
-            }
+
+            var port = GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestLoggingMailService(GetTestMailServiceOptions(port), loggerMock.Object);
+            service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
+            loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");
+            server.Stop();
         }
     }
 }
