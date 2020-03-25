@@ -24,4 +24,4 @@ test:
     stage: test
     script:
         - "dotnet test -t -d log.txt --filter $projectName"
-        - "find . -print -name 'log*.txt' -exec cat {} +"
+##        - "find . -print -name 'log*.txt' -exec cat {} +"
