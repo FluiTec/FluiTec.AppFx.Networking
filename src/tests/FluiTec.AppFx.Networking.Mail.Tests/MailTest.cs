@@ -28,14 +28,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
 
             var email = server.ReceivedEmail.Single();
             MailAssertHelper.VerifySuccessfulMail(server);
-            //Assert.AreEqual(GlobalTestSettings.SmtpMail, email.To.Single().Address);
-            //Assert.AreEqual(GlobalTestSettings.SmtpName, email.To.Single().DisplayName);
-
-            //Assert.AreEqual(GlobalTestSettings.SmtpMail, email.From.Address);
-            //Assert.AreEqual(GlobalTestSettings.SmtpName, email.From.DisplayName);
-
-            //Assert.AreEqual(GlobalTestSettings.MailSubject, email.Subject);
-            //Assert.AreEqual(GlobalTestSettings.MailContent, email.Body);
 
             server.Stop();
         }

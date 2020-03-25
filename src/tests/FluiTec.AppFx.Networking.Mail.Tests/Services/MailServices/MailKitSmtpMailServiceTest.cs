@@ -61,33 +61,29 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "127.0.0.1"});
         }
 
-        //[TestMethod]
-        //public void CanSendMail2()
-        //{
-        //    var port = GetFreePort();
-        //    var server = SimpleSmtpServer.Start(port);
-        //    var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
-        //    service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-        //        GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
-        //    MailAssertHelper.VerifySuccessfulMail(server);
-        //    server.Stop();
-        //}
+        [TestMethod]
+        public void CanSendMail2()
+        {
+            var port = GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
+            service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
+            MailAssertHelper.VerifySuccessfulMail(server);
+            server.Stop();
+        }
 
-        //[TestMethod]
-        //public void CanSendMail()
-        //{
-        //    var smtpMock = GetSmtpMock();
-        //    smtpMock.Started = (sender, listener) =>
-        //    {
-        //        var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(smtpMock.Port));
-        //        service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-        //            GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
-
-        //        smtpMock.Stop();
-        //    };
-        //    smtpMock.Start();
-        //    MailAssertHelper.VerifySuccessfulMail(smtpMock);
-        //}
+        [TestMethod]
+        public void CanSendMail()
+        {
+            var port = GetFreePort();
+            var server = SimpleSmtpServer.Start(port);
+            var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(port));
+            service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
+            MailAssertHelper.VerifySuccessfulMail(server);
+            server.Stop();
+        }
 
         [TestMethod]
         public void CanSendMailAsync()
