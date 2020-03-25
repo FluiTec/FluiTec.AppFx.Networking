@@ -36,6 +36,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
         /// <param name="expectedMessage">The Message to verify.</param>
         /// <param name="expectedException">The Exception to verify.</param>
         /// <param name="expectedValues">Zero or more KeyValuePairs to verify.</param>
+        // ReSharper disable once UnusedMember.Global
         public static void VerifyLog<T>(this Mock<ILogger<T>> loggerMock, string expectedMessage, Exception expectedException, params KeyValuePair<string, object>[] expectedValues)
         {
             loggerMock.Verify(logger => logger.Log(

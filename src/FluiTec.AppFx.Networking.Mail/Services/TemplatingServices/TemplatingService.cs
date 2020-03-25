@@ -48,6 +48,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
         /// <param name="optionsMonitor">The options monitor.</param>
         /// <param name="logger">The logger.</param>
+        // ReSharper disable once UnusedMember.Global
         protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor, ILogger<TemplatingService> logger) : this(optionsMonitor.CurrentValue, logger)
         {
             OptionsMonitor = optionsMonitor;

@@ -36,8 +36,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
         public void CanSendMailByModel()
         {
             var mailTransportMock = new Mock<IMailTransport>();
-
-            var port = MailKitSmtpMailServiceTest.GetFreePort();
             var project = new LocationExpandingRazorProject(new[] {new DefaultLocationExpander()}, null,
                 ApplicationHelper.GetMailViewPath());
             var engine =  new RazorLightEngineBuilder()
@@ -50,8 +48,11 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
 
             var model = new Test();
             var body = templateService.Parse(model);
-            service.SendMail(model, GlobalTestSettings.SmtpMail, GlobalTestSettings.SmtpName);
-            mailTransportMock.VerifySendMail(body);
+            service.SendMail(model, GlobalTestSettings.SmtpRecipientMail, GlobalTestSettings.SmtpRecipientName);
+            mailTransportMock.VerifySendMail(GlobalTestSettings.SmtpServer, GlobalTestSettings.SmtpPort,
+                GlobalTestSettings.SmtpSenderName, GlobalTestSettings.SmtpSenderMail,
+                GlobalTestSettings.SmtpRecipientName, GlobalTestSettings.SmtpRecipientMail,
+                GlobalTestSettings.MailSubject, body);
         }
     }
 }

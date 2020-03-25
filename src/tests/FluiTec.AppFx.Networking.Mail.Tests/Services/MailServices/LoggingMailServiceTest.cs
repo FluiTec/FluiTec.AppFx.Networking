@@ -19,7 +19,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             {
                 SmtpServer = GlobalTestSettings.SmtpServer,
                 SmtpPort = 25,
-                FromName = GlobalTestSettings.SmtpName, FromMail = GlobalTestSettings.SmtpMail
+                FromName = GlobalTestSettings.SmtpSenderName, FromMail = GlobalTestSettings.SmtpSenderMail
             }, null, new Mock<IMailTransport>().Object);
         }
 
@@ -30,8 +30,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var mailTransportMock = new Mock<IMailTransport>();
 
             var service = new TestLoggingMailService(GetTestMailServiceOptions(), loggerMock.Object, mailTransportMock.Object);
-            service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
+            service.SendEmailAsync(GlobalTestSettings.SmtpRecipientMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpRecipientName).Wait();
             loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");
         }
     }

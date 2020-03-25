@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Security;
 using System.Threading.Tasks;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using FluiTec.AppFx.Options.Exceptions;
 using MailKit;
-using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;

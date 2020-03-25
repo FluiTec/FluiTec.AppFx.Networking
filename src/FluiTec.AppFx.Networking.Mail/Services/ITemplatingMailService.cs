@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 // ReSharper disable UnusedMemberInSuper.Global
+// ReSharper disable UnusedMember.Global
 
 namespace FluiTec.AppFx.Networking.Mail.Services
 {

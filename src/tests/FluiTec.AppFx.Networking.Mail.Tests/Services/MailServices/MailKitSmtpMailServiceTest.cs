@@ -13,26 +13,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
     [TestClass]
     public class MailKitSmtpMailServiceTest
     {
-        #region Fields
-
-        private static int _lastPort = 49999;
-
-        #endregion
-
         #region Methods
-
-        internal static int GetFreePort()
-        {
-            _lastPort++;
-            return _lastPort;
-        }
 
         internal static MailServiceOptions GetTestMailServiceOptions()
         {
             return new MailServiceOptions
             {
-                FromMail = GlobalTestSettings.SmtpMail,
-                FromName = GlobalTestSettings.SmtpName,
+                FromMail = GlobalTestSettings.SmtpSenderMail,
+                FromName = GlobalTestSettings.SmtpSenderName,
                 SmtpServer = GlobalTestSettings.SmtpServer,
                 SmtpPort = GlobalTestSettings.SmtpPort
             };
@@ -59,9 +47,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         {
             var mailTransportMock = new Mock<IMailTransport>();
             var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(), mailTransportMock.Object);
-            service.SendEmail(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName);
-            mailTransportMock.VerifySendMail(GlobalTestSettings.MailContent);
+            service.SendEmail(GlobalTestSettings.SmtpRecipientMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpRecipientName);
+            mailTransportMock.VerifySendMail();
         }
 
         [TestMethod]
@@ -69,9 +57,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         {
             var mailTransportMock = new Mock<IMailTransport>();
             var service = new TestMailKitSmtpMailService(GetTestMailServiceOptions(), mailTransportMock.Object);
-            service.SendEmailAsync(GlobalTestSettings.SmtpMail, GlobalTestSettings.MailSubject,
-                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpName).Wait();
-            mailTransportMock.VerifySendMailAsync(GlobalTestSettings.MailContent);
+            service.SendEmailAsync(GlobalTestSettings.SmtpRecipientMail, GlobalTestSettings.MailSubject,
+                GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpRecipientName).Wait();
+            mailTransportMock.VerifySendMailAsync();
         }
     }
 }
