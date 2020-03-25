@@ -18,9 +18,9 @@ before_script:
 build:
     stage: build
     script:
-        - "dotnet build"
+        - "dotnet build --no-restore"
         
 test:
     stage: test
     script:
-        - "dotnet test -t --filter $projectName"
+        - "dotnet test --no-restore --no-build -t --filter $projectName"
