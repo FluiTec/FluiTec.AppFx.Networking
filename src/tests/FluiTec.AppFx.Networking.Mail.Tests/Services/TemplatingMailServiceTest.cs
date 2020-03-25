@@ -14,7 +14,7 @@ using RazorLight;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services
 {
-    [TestClass]
+    //[TestClass]
     public class TemplatingMailServiceTest
     {
         [TestMethod]

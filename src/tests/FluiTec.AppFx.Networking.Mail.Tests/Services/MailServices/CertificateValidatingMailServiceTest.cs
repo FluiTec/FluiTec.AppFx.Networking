@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
 {
-    [TestClass]
+    //[TestClass]
     public class CertificateValidatingMailServiceTest : LoggingMailServiceTest
     {
         [TestMethod]
