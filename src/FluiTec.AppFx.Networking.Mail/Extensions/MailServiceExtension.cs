@@ -69,7 +69,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 var expanders = provider.GetServices<ILocationExpander>();
                 var templateOptions = provider.GetRequiredService<MailTemplateOptions>();
                 var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
-                return new LocationExpandingRazorProject(expanders, provider.GetService<ILogger<LocationExpandingRazorProject>>(), absoluteRoot);
+                return new LocationExpandingFileRazorProject(expanders, provider.GetService<ILogger<LocationExpandingFileRazorProject>>(), absoluteRoot, templateOptions.Extension);
             });
             services.AddSingleton<IRazorLightEngine>(provider =>
             {

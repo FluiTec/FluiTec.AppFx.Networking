@@ -36,8 +36,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
         public void CanSendMailByModel()
         {
             var mailTransportMock = new Mock<IMailTransport>();
-            var project = new LocationExpandingRazorProject(new[] {new DefaultLocationExpander()}, null,
-                ApplicationHelper.GetMailViewPath());
+            var project = new LocationExpandingFileRazorProject(new[] {new DefaultLocationExpander()}, null,
+                ApplicationHelper.GetMailViewPath(), ".cshtml");
             var engine =  new RazorLightEngineBuilder()
                 .UseProject(project)
                 .UseMemoryCachingProvider()

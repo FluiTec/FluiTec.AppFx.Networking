@@ -8,8 +8,8 @@ using RazorLight.Razor;
 
 namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
 {
-    /// <summary>A location expanding razor project.</summary>
-    public class LocationExpandingRazorProject : FileSystemRazorProject
+    /// <summary>A location expanding razor project using simple files.</summary>
+    public sealed class LocationExpandingFileRazorProject : FileSystemRazorProject
     {
         #region Fields
 
@@ -17,21 +17,25 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
         private readonly IEnumerable<ILocationExpander> _expanders;
 
         /// <summary>   The logger. </summary>
-        private readonly ILogger<LocationExpandingRazorProject> _logger;
+        private readonly ILogger<LocationExpandingFileRazorProject> _logger;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>Constructor.</summary>
+        /// <summary>
+        ///   <para>Constructor.</para>
+        /// </summary>
         /// <param name="expanders">The expanders.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="baseDirectory"></param>
+        /// <param name="extension"></param>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are
-        ///                                           null.</exception>
-        public LocationExpandingRazorProject(IEnumerable<ILocationExpander> expanders, ILogger<LocationExpandingRazorProject> logger, string baseDirectory) 
+        ///                                         null.</exception>
+        public LocationExpandingFileRazorProject(IEnumerable<ILocationExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string baseDirectory, string extension) 
             : base(baseDirectory)
         {
+            Extension = extension ?? throw new ArgumentNullException(nameof(extension));
             _expanders = expanders ?? throw new ArgumentNullException(nameof(expanders));
             _logger = logger; // we accept null here
         }

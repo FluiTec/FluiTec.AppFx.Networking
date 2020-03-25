@@ -8,33 +8,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
 {
     [TestClass]
-    public class LocationExpandingRazorProjectTest
+    public class LocationExpandingFileRazorProjectTest
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingExpanders()
         {
-            var unused = new LocationExpandingRazorProject(null, null, ApplicationHelper.GetMailViewPath());
+            var unused = new LocationExpandingFileRazorProject(null, null, ApplicationHelper.GetMailViewPath(), ".cshtml");
         }
 
         [TestMethod]
         [ExpectedException(typeof(DirectoryNotFoundException))]
         public void ThrowsOnMissingDirectory()
         {
-            var unused = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, string.Empty);
+            var unused = new LocationExpandingFileRazorProject(new [] {new DefaultLocationExpander() }, null, string.Empty, ".cshtml");
         }
 
         [TestMethod]
         public void DoesntThrowOnMissingFile()
         {
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
+            var project = new LocationExpandingFileRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath(), ".cshtml");
             Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
 
         [TestMethod]
         public void CanFindFile()
         {
-            var project = new LocationExpandingRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath());
+            var project = new LocationExpandingFileRazorProject(new [] {new DefaultLocationExpander() }, null, ApplicationHelper.GetMailViewPath(), ".cshtml");
             Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
         }
     }
