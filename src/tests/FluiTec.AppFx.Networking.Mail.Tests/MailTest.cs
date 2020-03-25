@@ -41,7 +41,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests
         [TestMethod]
         public void DoMailTest2()
         {
-            var port = 25;
+            var port = 26;
             var server = SimpleSmtpServer.Start(port);
             var service = new TestMailKitSmtpMailService(new MailServiceOptions
             {
