@@ -14,6 +14,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration
         }
 
         [TestMethod]
+        public void DefaultsToMailViewsNamespace()
+        {
+            var options = new MailTemplateOptions();
+            Assert.IsTrue(options.DefaultNamespace == "MailViews");
+        }
+
+        [TestMethod]
         public void DefaultsToCshtmlExtension()
         {
             var options = new MailTemplateOptions();

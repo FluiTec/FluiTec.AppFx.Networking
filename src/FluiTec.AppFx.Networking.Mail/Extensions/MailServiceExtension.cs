@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using FluiTec.AppFx.Networking.Mail.Configuration;
 using FluiTec.AppFx.Networking.Mail.Configuration.Validators;
 using FluiTec.AppFx.Networking.Mail.Factories;
@@ -56,20 +57,42 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>Configures the razor light.</summary>
         /// <param name="services">The services.</param>
         /// <param name="environment">The environment.</param>
+        /// <param name="assemblyRootType">A root type of the assembly.</param>
         /// <returns></returns>
         public static IServiceCollection ConfigureRazorLight(this IServiceCollection services,
-            IWebHostEnvironment environment)
+            IWebHostEnvironment environment, Type assemblyRootType = null)
         {
-            services.AddSingleton<ILocationExpander, DefaultCultureLocationExpander>();
-            services.AddSingleton<ILocationExpander, SharedCultureLocationExpander>();
-            services.AddSingleton<ILocationExpander, SharedLocationExpander>();
-            services.AddSingleton<ILocationExpander, DefaultLocationExpander>();
+            services.AddSingleton<IFileLocationExpander, DefaultCultureLocationExpander>();
+            services.AddSingleton<IResourceExpander, DefaultCultureLocationExpander>();
+
+            services.AddSingleton<IFileLocationExpander, SharedCultureLocationExpander>();
+            services.AddSingleton<IResourceExpander, SharedCultureLocationExpander>();
+
+            services.AddSingleton<IFileLocationExpander, SharedLocationExpander>();
+            services.AddSingleton<IResourceExpander, SharedLocationExpander>();
+
+            services.AddSingleton<IFileLocationExpander, DefaultLocationExpander>();
+            services.AddSingleton<IResourceExpander, DefaultLocationExpander>();
+
             services.AddSingleton<RazorLightProject>(provider =>
             {
-                var expanders = provider.GetServices<ILocationExpander>();
                 var templateOptions = provider.GetRequiredService<MailTemplateOptions>();
-                var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
-                return new LocationExpandingFileRazorProject(expanders, provider.GetService<ILogger<LocationExpandingFileRazorProject>>(), absoluteRoot, templateOptions.Extension);
+                switch (templateOptions.TemplateSource)
+                {
+                    case MailTemplateOptions.MailTemplateSource.File:
+                        var fileExpanders = provider.GetServices<IFileLocationExpander>();
+                        var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
+                        return new LocationExpandingFileRazorProject(fileExpanders,
+                            provider.GetService<ILogger<LocationExpandingFileRazorProject>>(), absoluteRoot,
+                            templateOptions.Extension);
+                    case MailTemplateOptions.MailTemplateSource.Embedded:
+                        var resourceExpanders = provider.GetServices<IResourceExpander>();
+                        return new LocationExpandingEmbeddedRazorProject(assemblyRootType, resourceExpanders,
+                            provider.GetService<ILogger<LocationExpandingFileRazorProject>>(),
+                            templateOptions.DefaultNamespace);
+                    default:
+                        throw new NotImplementedException();
+                }
             });
             services.AddSingleton<IRazorLightEngine>(provider =>
             {
@@ -86,15 +109,16 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The services.</param>
         /// <param name="environment">The HostingEnvironment.</param>
         /// <param name="manager">The manager.</param>
+        /// <param name="assemblyRootType">A root type of the assembly.</param>
         /// <returns></returns>
         // ReSharper disable once UnusedMember.Global
         public static IServiceCollection ConfigureMailServiceTemplated(this IServiceCollection services, 
-            IWebHostEnvironment environment, ValidatingConfigurationManager manager)
+            IWebHostEnvironment environment, ValidatingConfigurationManager manager, Type assemblyRootType = null)
         {
             return services
                 .ConfigureMailService(manager)
                 .ConfigureMailTemplateService(manager)
-                .ConfigureRazorLight(environment)
+                .ConfigureRazorLight(environment, assemblyRootType)
                 .AddScoped<ITemplatingMailService, TemplatingMailService>();
         }
     }

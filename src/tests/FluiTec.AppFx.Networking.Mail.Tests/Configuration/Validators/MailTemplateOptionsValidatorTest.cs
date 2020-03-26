@@ -15,12 +15,41 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
         [TestMethod]
         public void ValidatesEmptyBaseDirectory()
         {
-            var options = new MailTemplateOptions {BaseDirectory = string.Empty};
+            var options = new MailTemplateOptions {BaseDirectory = string.Empty, TemplateSource = MailTemplateOptions.MailTemplateSource.File};
             var validator = new MailTemplateOptionsValidator();
             var result = validator.Validate(options);
             var validated = result.Errors.Any(e => e.PropertyName == nameof(MailTemplateOptions.BaseDirectory) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
+        }
+
+        [TestMethod]
+        public void NotValidatesEmptyBaseDirectory()
+        {
+            var options = new MailTemplateOptions {BaseDirectory = string.Empty, TemplateSource = MailTemplateOptions.MailTemplateSource.Embedded};
+            var validator = new MailTemplateOptionsValidator();
+            var result = validator.Validate(options);
+            Assert.IsTrue(result.IsValid);
+        }
+
+        [TestMethod]
+        public void ValidatesEmptyDefaultNamespace()
+        {
+            var options = new MailTemplateOptions {DefaultNamespace = string.Empty, TemplateSource = MailTemplateOptions.MailTemplateSource.Embedded};
+            var validator = new MailTemplateOptionsValidator();
+            var result = validator.Validate(options);
+            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailTemplateOptions.DefaultNamespace) && e.ResourceName == NotEmptyValidator);
+
+            Assert.IsTrue(validated);
+        }
+
+        [TestMethod]
+        public void NotValidatesEmptyDefaultNamespace()
+        {
+            var options = new MailTemplateOptions {DefaultNamespace = string.Empty, TemplateSource = MailTemplateOptions.MailTemplateSource.File};
+            var validator = new MailTemplateOptionsValidator();
+            var result = validator.Validate(options);
+            Assert.IsTrue(result.IsValid);
         }
 
         [TestMethod]

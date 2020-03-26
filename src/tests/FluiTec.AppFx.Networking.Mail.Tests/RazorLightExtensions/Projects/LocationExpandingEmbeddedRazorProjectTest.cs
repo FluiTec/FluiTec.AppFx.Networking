@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders;
 using FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects;
-using FluiTec.AppFx.Networking.Mail.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
@@ -16,15 +12,28 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingExpanders()
         {
-            var unused = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), null, null);
+            var unused = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), null, null, "MailViewsEmbedded");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ThrowsOnMissingNamespace()
+        {
+            var unused = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "");
+        }
+
+        [TestMethod]
+        public void DoesntThrowOnMissingResource()
+        {
+            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "MailViewsEmbedded");
+            Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
 
         [TestMethod]
         public void CanFindTemplate()
         {
-            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new ILocationExpander[] {}, null);
-            var template = project.GetItemAsync("Test.cshtml").Result;
-            var exists = template.Exists;
+            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "MailViewsEmbedded");
+            Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
         }
     }
 }

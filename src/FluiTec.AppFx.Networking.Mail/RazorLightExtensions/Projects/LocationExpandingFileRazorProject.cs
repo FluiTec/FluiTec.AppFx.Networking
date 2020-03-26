@@ -14,7 +14,7 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
         #region Fields
 
         /// <summary>The expanders.</summary>
-        private readonly IEnumerable<ILocationExpander> _expanders;
+        private readonly IEnumerable<IFileLocationExpander> _expanders;
 
         /// <summary>   The logger. </summary>
         private readonly ILogger<LocationExpandingFileRazorProject> _logger;
@@ -32,7 +32,7 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
         /// <param name="extension"></param>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are
         ///                                         null.</exception>
-        public LocationExpandingFileRazorProject(IEnumerable<ILocationExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string baseDirectory, string extension) 
+        public LocationExpandingFileRazorProject(IEnumerable<IFileLocationExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string baseDirectory, string extension) 
             : base(baseDirectory)
         {
             Extension = extension ?? throw new ArgumentNullException(nameof(extension));

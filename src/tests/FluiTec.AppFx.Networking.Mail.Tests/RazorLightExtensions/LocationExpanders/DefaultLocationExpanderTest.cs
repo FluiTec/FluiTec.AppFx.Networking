@@ -6,9 +6,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.LocationExpan
     [TestClass]
     public class DefaultLocationExpanderTest : LocationExpanderTest
     {
-        protected override ILocationExpander GetExpander() => new DefaultLocationExpander();
+        protected override IFileLocationExpander GetExpander() => new DefaultLocationExpander();
+        protected override IResourceExpander GetResourceExpander() => new DefaultLocationExpander();
 
         [TestMethod]
         public void CanExpand() => TestExpanding("Test", "Test");
+
+        [TestMethod]
+        public void CanExpandRersource() => TestResourceExpanding("Test", "Test");
     }
 }

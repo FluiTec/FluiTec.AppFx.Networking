@@ -7,9 +7,13 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.LocationExpan
     [TestClass]
     public class SharedCultureLocationExpanderTest : LocationExpanderTest
     {
-        protected override ILocationExpander GetExpander() => new SharedCultureLocationExpander();
+        protected override IFileLocationExpander GetExpander() => new SharedCultureLocationExpander();
+        protected override IResourceExpander GetResourceExpander() => new SharedCultureLocationExpander();
 
         [TestMethod]
         public void CanExpand() => TestExpanding("Test", $"Shared/{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}/Test");
+
+        [TestMethod]
+        public void CanExpandResource() => TestResourceExpanding("Test", $"Shared.{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}.Test");
     }
 }

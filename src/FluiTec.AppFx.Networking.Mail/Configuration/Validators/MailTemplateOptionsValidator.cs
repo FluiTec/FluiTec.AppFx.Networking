@@ -9,7 +9,10 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration.Validators
         /// <summary>Initializes a new instance of the <see cref="MailTemplateOptionsValidator"/> class.</summary>
         public MailTemplateOptionsValidator()
         {
-            RuleFor(options => options.BaseDirectory).NotEmpty();
+            RuleFor(options => options.BaseDirectory).NotEmpty()
+                .When(options => options.TemplateSource == MailTemplateOptions.MailTemplateSource.File);
+            RuleFor(options => options.DefaultNamespace).NotEmpty()
+                .When(options => options.TemplateSource == MailTemplateOptions.MailTemplateSource.Embedded);
             RuleFor(options => options.Extension)
                 .NotEmpty()
                 .Must(str => str.StartsWith("."))

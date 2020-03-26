@@ -3,7 +3,7 @@
 namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.LocationExpanders
 {
     /// <summary>Interface for location expander.</summary>
-    public interface ILocationExpander
+    public interface IFileLocationExpander
     {
         /// <summary>Enumerates expand in this collection.</summary>
         /// <param name="viewName"> Name of the view. </param>
