@@ -2,14 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <NeutralLanguage>en</NeutralLanguage>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://www.nuget.org/packages/FluiTec.AppFx.Networking/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/FluiTec/FluiTec.AppFx.Networking</RepositoryUrl>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE.md">
       <Pack>True</Pack>
+      <PackagePath />
     </None>
     <None Include="..\..\THIRD_PARTY_LICENSES.md">
       <Pack>True</Pack>
+      <PackagePath />
     </None>
   </ItemGroup>
 
@@ -18,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="FluiTec.AppFx.Options" Version="1.1.19"></PackageReference>
+    <PackageReference Include="FluiTec.AppFx.Options" Version="1.1.24"></PackageReference>
   </ItemGroup>
 
   <ItemGroup>

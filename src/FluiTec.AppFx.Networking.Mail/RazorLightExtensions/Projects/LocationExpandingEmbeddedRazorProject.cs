@@ -41,6 +41,7 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
         /// <param name="expanders">The expanders.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="rootNamespace">The root namespace.</param>
+        // ReSharper disable once UnusedMember.Global
         public LocationExpandingEmbeddedRazorProject(Assembly assembly, IEnumerable<IResourceExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string rootNamespace) : base(assembly, rootNamespace)
         {
             if (string.IsNullOrWhiteSpace(rootNamespace))
