@@ -29,7 +29,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
             var loggerMock = new Mock<ILogger<TestLoggingMailService>>();
             var mailTransportMock = new Mock<IMailTransport>();
 
-            var service = new TestLoggingMailService(GetTestMailServiceOptions(), loggerMock.Object, mailTransportMock.Object);
+            var service = new TestLoggingMailService(GetTestMailServiceOptions(), loggerMock.Object,
+                mailTransportMock.Object);
             service.SendEmailAsync(GlobalTestSettings.SmtpRecipientMail, GlobalTestSettings.MailSubject,
                 GlobalTestSettings.MailContent, TextFormat.Plain, GlobalTestSettings.SmtpRecipientName).Wait();
             loggerMock.VerifyLog(LogLevel.Information, "Successfully sent mail.");

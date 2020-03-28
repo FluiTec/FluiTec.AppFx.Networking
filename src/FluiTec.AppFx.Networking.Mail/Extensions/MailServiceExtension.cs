@@ -24,19 +24,20 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="services">The services.</param>
         /// <param name="manager">The manager.</param>
         /// <returns></returns>
-        public static IServiceCollection ConfigureMailService(this IServiceCollection services, 
+        public static IServiceCollection ConfigureMailService(this IServiceCollection services,
             ValidatingConfigurationManager manager)
         {
             // configure options and validators
             manager.ConfigureValidator(new MailServiceOptionsValidator());
-            services.Configure<MailServiceOptions>(manager);
-            services.Configure<MailServerCertificateValidationOptions>(manager);
+            services.Configure<MailServiceOptions>(manager, true);
+            services.Configure<MailServerCertificateValidationOptions>(manager, true);
             services.AddSingleton<IMailTransportFactory, MailKitSmtpTransportFactory>();
-            services.AddScoped<IMailService, CertificateValidatingMailService>(provider => new CertificateValidatingMailService(
-                provider.GetRequiredService<IOptionsMonitor<MailServiceOptions>>(), 
-                provider.GetService<ILogger<CertificateValidatingMailService>>() , 
-                provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>(),
-                provider.GetRequiredService<IMailTransportFactory>()));
+            services.AddScoped<IMailService, CertificateValidatingMailService>(provider =>
+                new CertificateValidatingMailService(
+                    provider.GetRequiredService<IOptionsMonitor<MailServiceOptions>>(),
+                    provider.GetService<ILogger<CertificateValidatingMailService>>(),
+                    provider.GetRequiredService<IOptionsMonitor<MailServerCertificateValidationOptions>>(),
+                    provider.GetRequiredService<IMailTransportFactory>()));
             return services;
         }
 
@@ -49,7 +50,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             // configure options and validators
             manager.ConfigureValidator(new MailTemplateOptionsValidator());
-            services.Configure<MailTemplateOptions>(manager);
+            services.Configure<MailTemplateOptions>(manager, true);
             services.AddScoped<ITemplatingService, RazorLightTemplatingService>();
             return services;
         }
@@ -81,7 +82,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     case MailTemplateOptions.MailTemplateSource.File:
                         var fileExpanders = provider.GetServices<IFileLocationExpander>();
-                        var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath, templateOptions.BaseDirectory));
+                        var absoluteRoot = Path.GetFullPath(Path.Combine(environment.ContentRootPath,
+                            templateOptions.BaseDirectory));
                         return new LocationExpandingFileRazorProject(fileExpanders,
                             provider.GetService<ILogger<LocationExpandingFileRazorProject>>(), absoluteRoot,
                             templateOptions.Extension);
@@ -112,7 +114,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="assemblyRootType">A root type of the assembly.</param>
         /// <returns></returns>
         // ReSharper disable once UnusedMember.Global
-        public static IServiceCollection ConfigureMailServiceTemplated(this IServiceCollection services, 
+        public static IServiceCollection ConfigureMailServiceTemplated(this IServiceCollection services,
             IWebHostEnvironment environment, ValidatingConfigurationManager manager, Type assemblyRootType = null)
         {
             return services

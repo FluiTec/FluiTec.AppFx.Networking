@@ -34,7 +34,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="TemplatingService" /> class.</summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">options</exception>
@@ -45,11 +45,12 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             ValidateOptions(options);
         }
 
-        /// <summary>Initializes a new instance of the <see cref="TemplatingService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="TemplatingService" /> class.</summary>
         /// <param name="optionsMonitor">The options monitor.</param>
         /// <param name="logger">The logger.</param>
         // ReSharper disable once UnusedMember.Global
-        protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor, ILogger<TemplatingService> logger) : this(optionsMonitor.CurrentValue, logger)
+        protected TemplatingService(IOptionsMonitor<MailTemplateOptions> optionsMonitor,
+            ILogger<TemplatingService> logger) : this(optionsMonitor.CurrentValue, logger)
         {
             OptionsMonitor = optionsMonitor;
             OptionsMonitor.OnChange(ValidateOptions);

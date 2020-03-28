@@ -15,12 +15,12 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <summary>Gets the logger.</summary>
         /// <value>The logger.</value>
         protected ILogger<LoggingMailService> Logger { get; }
-        
+
         #endregion
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="LoggingMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="LoggingMailService" /> class.</summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger.</param>
         protected LoggingMailService(MailServiceOptions options, ILogger<LoggingMailService> logger) : base(options)
@@ -28,7 +28,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             Logger = logger; // we accept null here
         }
 
-        /// <summary>Initializes a new instance of the <see cref="LoggingMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="LoggingMailService" /> class.</summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
         /// <param name="logger">The logger.</param>
         protected LoggingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
@@ -58,7 +58,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         protected override void SendMail(MimeMessage message)
         {
             Logger?.LogInformation($"Sending mail. Subject: {message.Subject}, Recipients:");
-            foreach(var r in message.To)
+            foreach (var r in message.To)
                 Logger?.LogInformation($"- {r}");
 
             base.SendMail(message);

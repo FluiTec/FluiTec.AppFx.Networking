@@ -14,7 +14,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices
             _mailClient = mailClient;
         }
 
-        public override RemoteCertificateValidationCallback CertificateValidationCallback => (sender, certificate, chain, errors) => true;
+        public override RemoteCertificateValidationCallback CertificateValidationCallback =>
+            (sender, certificate, chain, errors) => true;
 
         protected override IMailTransport GetMailClient()
         {

@@ -2,11 +2,11 @@
 
 namespace FluiTec.AppFx.Networking.Mail.Configuration.Validators
 {
-    /// <summary>Validator for <see cref="MailServiceOptions"/></summary>
+    /// <summary>Validator for <see cref="MailServiceOptions" /></summary>
     /// <seealso cref="FluentValidation.AbstractValidator{MailServiceOptions}" />
     public class MailServiceOptionsValidator : AbstractValidator<MailServiceOptions>
     {
-        /// <summary>Initializes a new instance of the <see cref="MailServiceOptionsValidator"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailServiceOptionsValidator" /> class.</summary>
         public MailServiceOptionsValidator()
         {
             RuleFor(options => options.SmtpServer).NotEmpty();

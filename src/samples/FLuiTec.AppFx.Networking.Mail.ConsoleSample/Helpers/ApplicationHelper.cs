@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
+namespace FLuiTec.AppFx.Networking.Mail.ConsoleSample.Helpers
 {
     public static class ApplicationHelper
     {
@@ -12,12 +12,6 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
                 .Replace("file:/", "/")
                 .Replace("file:\\", "");
             return exePath;
-        }
-
-        public static string GetMailViewPath()
-        {
-            var path = Path.Combine(GetApplicationPath(), "MailViews");
-            return path;
         }
 
         public static string GetApplicationCodebase()

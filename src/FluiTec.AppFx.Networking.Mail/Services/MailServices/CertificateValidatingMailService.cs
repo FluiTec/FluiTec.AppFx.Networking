@@ -23,7 +23,9 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         /// <summary>Gets the certificate options.</summary>
         /// <value>The certificate options.</value>
-        public MailServerCertificateValidationOptions CertificateOptions => CertificateOptionsMonitor != null ? CertificateOptionsMonitor.CurrentValue : _certificateOptions;
+        public MailServerCertificateValidationOptions CertificateOptions => CertificateOptionsMonitor != null
+            ? CertificateOptionsMonitor.CurrentValue
+            : _certificateOptions;
 
         /// <summary>Gets the certificate options monitor.</summary>
         /// <value>The certificate options monitor.</value>
@@ -41,16 +43,16 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="CertificateValidatingMailService" /> class.</summary>
         /// <param name="options">The options.</param>
         /// <param name="logger">The logger to use.</param>
         /// <param name="certificateOptions">The certificateOptions.</param>
         /// <param name="mailClientFactory">The mailClientFactory.</param>
         /// <exception cref="ArgumentNullException">certificateOptions, options</exception>
-        public CertificateValidatingMailService(MailServiceOptions options, 
-            ILogger<CertificateValidatingMailService> logger, 
+        public CertificateValidatingMailService(MailServiceOptions options,
+            ILogger<CertificateValidatingMailService> logger,
             MailServerCertificateValidationOptions certificateOptions,
-            IMailTransportFactory mailClientFactory) 
+            IMailTransportFactory mailClientFactory)
             : base(options, logger)
         {
             MailClientFactory = mailClientFactory ?? throw new ArgumentNullException(nameof(mailClientFactory));
@@ -59,8 +61,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         }
 
         /// <summary>
-        ///   <para></para>
-        ///   <para>Initializes a new instance of the <see cref="CertificateValidatingMailService"/> class.</para>
+        ///     <para></para>
+        ///     <para>Initializes a new instance of the <see cref="CertificateValidatingMailService" /> class.</para>
         /// </summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
         /// <param name="logger">The logger to use.</param>
@@ -70,11 +72,12 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         public CertificateValidatingMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor,
             ILogger<CertificateValidatingMailService> logger,
             IOptionsMonitor<MailServerCertificateValidationOptions> certificateOptionsMonitor,
-            IMailTransportFactory mailClientFactory) 
+            IMailTransportFactory mailClientFactory)
             : base(optionsMonitor, logger)
         {
             MailClientFactory = mailClientFactory ?? throw new ArgumentNullException(nameof(mailClientFactory));
-            CertificateOptionsMonitor = certificateOptionsMonitor ?? throw new ArgumentNullException(nameof(certificateOptionsMonitor));
+            CertificateOptionsMonitor = certificateOptionsMonitor ??
+                                        throw new ArgumentNullException(nameof(certificateOptionsMonitor));
             CertificateValidationCallback = ValidateCertificate;
         }
 
@@ -89,7 +92,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             return MailClientFactory.CreateNew();
         }
 
-        private bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        private bool ValidateCertificate(object sender, X509Certificate certificate, X509Chain chain,
+            SslPolicyErrors sslpolicyerrors)
         {
             Logger?.LogInformation("Validating MailServer-Certificate.");
 
@@ -125,7 +129,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Subject) &&
                 CertificateOptions.CertificateValidation.Subject != certificate.Subject)
             {
-                Logger?.LogInformation($"-> Certificate has wrong subject. Actual{certificate.Subject}, Expected: {CertificateOptions.CertificateValidation.Subject}. Denying connection.");
+                Logger?.LogInformation(
+                    $"-> Certificate has wrong subject. Actual{certificate.Subject}, Expected: {CertificateOptions.CertificateValidation.Subject}. Denying connection.");
                 return false;
             }
 
@@ -133,7 +138,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Issuer) &&
                 CertificateOptions.CertificateValidation.Issuer != certificate.Issuer)
             {
-                Logger?.LogInformation($"-> Certificate has wrong issuer. Actual{certificate.Issuer}, Expected: {CertificateOptions.CertificateValidation.Issuer}. Denying connection.");
+                Logger?.LogInformation(
+                    $"-> Certificate has wrong issuer. Actual{certificate.Issuer}, Expected: {CertificateOptions.CertificateValidation.Issuer}. Denying connection.");
                 return false;
             }
 
@@ -141,7 +147,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.SerialNumber) &&
                 CertificateOptions.CertificateValidation.SerialNumber != certificate.GetSerialNumberString())
             {
-                Logger?.LogInformation($"-> Certificate has wrong serial. Actual{certificate.GetSerialNumberString()}, Expected: {CertificateOptions.CertificateValidation.SerialNumber}. Denying connection.");
+                Logger?.LogInformation(
+                    $"-> Certificate has wrong serial. Actual{certificate.GetSerialNumberString()}, Expected: {CertificateOptions.CertificateValidation.SerialNumber}. Denying connection.");
                 return false;
             }
 
@@ -149,7 +156,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             if (!string.IsNullOrWhiteSpace(CertificateOptions.CertificateValidation.Hash) &&
                 CertificateOptions.CertificateValidation.Hash != certificate.GetCertHashString())
             {
-                Logger?.LogInformation($"-> Certificate has wrong hash. Actual{certificate.GetCertHashString()}, Expected: {CertificateOptions.CertificateValidation.Hash}. Denying connection.");
+                Logger?.LogInformation(
+                    $"-> Certificate has wrong hash. Actual{certificate.GetCertHashString()}, Expected: {CertificateOptions.CertificateValidation.Hash}. Denying connection.");
                 return false;
             }
 
@@ -158,7 +166,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
                 certificate is X509Certificate2 x509Certificate2 &&
                 CertificateOptions.CertificateValidation.Thumbprint != x509Certificate2.Thumbprint)
             {
-                Logger?.LogInformation($"-> Certificate has wrong thumbprint. Actual{x509Certificate2.Thumbprint}, Expected: {CertificateOptions.CertificateValidation.Thumbprint}. Denying connection.");
+                Logger?.LogInformation(
+                    $"-> Certificate has wrong thumbprint. Actual{x509Certificate2.Thumbprint}, Expected: {CertificateOptions.CertificateValidation.Thumbprint}. Denying connection.");
                 return false;
             }
 

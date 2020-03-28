@@ -15,7 +15,9 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingCertificateOptions()
         {
-            var unused = new TestCertificateValidatingMailService(GetTestMailServiceOptions(), new Mock<ILogger<CertificateValidatingMailService>>().Object, null, new Mock<IMailTransportFactory>().Object);
+            var unused = new TestCertificateValidatingMailService(GetTestMailServiceOptions(),
+                new Mock<ILogger<CertificateValidatingMailService>>().Object, null,
+                new Mock<IMailTransportFactory>().Object);
         }
     }
 }

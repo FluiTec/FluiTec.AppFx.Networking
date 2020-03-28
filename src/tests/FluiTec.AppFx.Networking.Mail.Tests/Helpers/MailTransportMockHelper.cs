@@ -24,13 +24,15 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
                 GlobalTestSettings.MailSubject, GlobalTestSettings.MailContent);
         }
 
-        public static void VerifySendMail(this Mock<IMailTransport> mailTransportMock, string server, int port, string senderName, string senderMail, string recipientName, string recipientMail, string subject, string expectedContent)
+        public static void VerifySendMail(this Mock<IMailTransport> mailTransportMock, string server, int port,
+            string senderName, string senderMail, string recipientName, string recipientMail, string subject,
+            string expectedContent)
         {
             // verify connection
             mailTransportMock.Verify(mock =>
                 mock.Connect
                 (
-                    server, 
+                    server,
                     port,
                     It.IsAny<SecureSocketOptions>(),
                     default
@@ -45,14 +47,16 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
                         message.From.Single().ToString() == $"\"{senderName}\" <{senderMail}>" &&
                         message.To.Single().ToString() == $"\"{recipientName}\" <{recipientMail}>" &&
                         message.Subject == subject &&
-                        ((TextPart)message.Body).Text == expectedContent),
+                        ((TextPart) message.Body).Text == expectedContent),
                     default,
                     null
                 )
             );
         }
 
-        public static void VerifySendMailAsync(this Mock<IMailTransport> mailTransportMock, string server, int port, string senderName, string senderMail, string recipientName, string recipientMail, string subject, string expectedContent)
+        public static void VerifySendMailAsync(this Mock<IMailTransport> mailTransportMock, string server, int port,
+            string senderName, string senderMail, string recipientName, string recipientMail, string subject,
+            string expectedContent)
         {
             // verify connection
             mailTransportMock.Verify(mock =>
@@ -73,7 +77,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Helpers
                         message.From.Single().ToString() == $"\"{senderName}\" <{senderMail}>" &&
                         message.To.Single().ToString() == $"\"{recipientName}\" <{recipientMail}>" &&
                         message.Subject == subject &&
-                        ((TextPart)message.Body).Text == expectedContent),
+                        ((TextPart) message.Body).Text == expectedContent),
                     default,
                     null
                 )

@@ -7,7 +7,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
     [ConfigurationKey("MailServiceOptions")]
     public class MailServiceOptions
     {
-        /// <summary>Initializes a new instance of the <see cref="MailServiceOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailServiceOptions" /> class.</summary>
         public MailServiceOptions()
         {
             Authenticate = false;

@@ -7,7 +7,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
     [ConfigurationKey("MailServerCertificateValidationOptions")]
     public class MailServerCertificateValidationOptions
     {
-        /// <summary>Initializes a new instance of the <see cref="MailServerCertificateValidationOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailServerCertificateValidationOptions" /> class.</summary>
         public MailServerCertificateValidationOptions()
         {
             Validate = true;
@@ -15,7 +15,10 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
             CertificateValidation = new X509CertificateValidationOptions();
         }
 
-        /// <summary>Gets or sets a value indicating whether this <see cref="MailServerCertificateValidationOptions"/> is validate.</summary>
+        /// <summary>
+        ///     Gets or sets a value indicating whether this <see cref="MailServerCertificateValidationOptions" /> is
+        ///     validate.
+        /// </summary>
         /// <value><c>true</c> if validate; otherwise, <c>false</c>.</value>
         public bool Validate { get; set; }
 
@@ -31,15 +34,16 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
     /// <summary>Options for validating a X509Certificate</summary>
     public class X509CertificateValidationOptions
     {
-        /// <summary>Initializes a new instance of the <see cref="X509CertificateValidationOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="X509CertificateValidationOptions" /> class.</summary>
         public X509CertificateValidationOptions()
         {
             Validate = false;
         }
 
-        /// <summary>Gets or sets a value indicating whether this <see cref="X509CertificateValidationOptions"/> is validate.</summary>
+        /// <summary>Gets or sets a value indicating whether this <see cref="X509CertificateValidationOptions" /> is validate.</summary>
         /// <value>
-        ///   <c>true</c> if validate; otherwise, <c>false</c>.</value>
+        ///     <c>true</c> if validate; otherwise, <c>false</c>.
+        /// </value>
         public bool Validate { get; set; }
 
         /// <summary>Gets or sets the subject.</summary>

@@ -13,20 +13,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.LocationExpan
         {
             var expander = GetExpander();
             var expanded = expander.Expand(viewName).ToList();
-            foreach (var e in expexted)
-            {
-                Assert.IsTrue(expanded.Contains(e));
-            }
+            foreach (var e in expexted) Assert.IsTrue(expanded.Contains(e));
         }
 
         public void TestResourceExpanding(string viewName, params string[] expexted)
         {
             var expander = GetResourceExpander();
             var expanded = expander.ExpandResource(viewName).ToList();
-            foreach (var e in expexted)
-            {
-                Assert.IsTrue(expanded.Contains(e));
-            }
+            foreach (var e in expexted) Assert.IsTrue(expanded.Contains(e));
         }
     }
 }

@@ -7,13 +7,26 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.LocationExpan
     [TestClass]
     public class DefaultCultureLocationExpanderTest : LocationExpanderTest
     {
-        protected override IFileLocationExpander GetExpander() => new DefaultCultureLocationExpander();
-        protected override IResourceExpander GetResourceExpander() => new DefaultCultureLocationExpander();
+        protected override IFileLocationExpander GetExpander()
+        {
+            return new DefaultCultureLocationExpander();
+        }
+
+        protected override IResourceExpander GetResourceExpander()
+        {
+            return new DefaultCultureLocationExpander();
+        }
 
         [TestMethod]
-        public void CanExpand() => TestExpanding("Test", $"{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}/Test");
+        public void CanExpand()
+        {
+            TestExpanding("Test", $"{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}/Test");
+        }
 
         [TestMethod]
-        public void CanExpandResource() => TestResourceExpanding("Test", $"{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}.Test");
+        public void CanExpandResource()
+        {
+            TestResourceExpanding("Test", $"{CultureInfo.CurrentUICulture.TwoLetterISOLanguageName}.Test");
+        }
     }
 }

@@ -10,12 +10,14 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices.TestServices
     {
         private readonly IMailTransport _mailClient;
 
-        public TestLoggingMailService(MailServiceOptions options, ILogger<LoggingMailService> logger, IMailTransport mailClient) : base(options, logger)
+        public TestLoggingMailService(MailServiceOptions options, ILogger<LoggingMailService> logger,
+            IMailTransport mailClient) : base(options, logger)
         {
             _mailClient = mailClient;
         }
 
-        public override RemoteCertificateValidationCallback CertificateValidationCallback => (sender, certificate, chain, errors) => true;
+        public override RemoteCertificateValidationCallback CertificateValidationCallback =>
+            (sender, certificate, chain, errors) => true;
 
         protected override IMailTransport GetMailClient()
         {

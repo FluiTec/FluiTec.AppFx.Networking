@@ -27,7 +27,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         }
 
         #endregion
-        
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingOptions()
@@ -39,7 +39,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services.MailServices
         [ExpectedException(typeof(ValidationException))]
         public void ThrowsOnInvalidOptions()
         {
-            var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "127.0.0.1"}, new Mock<IMailTransport>().Object);
+            var unused = new TestMailKitSmtpMailService(new MailServiceOptions {SmtpServer = "127.0.0.1"},
+                new Mock<IMailTransport>().Object);
         }
 
         [TestMethod]

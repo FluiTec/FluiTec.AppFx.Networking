@@ -16,7 +16,8 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="options">The options to use.</param>
         /// <param name="logger">The logger.</param>
         /// <exception cref="ArgumentNullException">Thrown when one or more required arguments are null.</exception>
-        public RazorLightTemplatingService(IRazorLightEngine engine, MailTemplateOptions options, ILogger<RazorLightTemplatingService> logger) : base(options, logger)
+        public RazorLightTemplatingService(IRazorLightEngine engine, MailTemplateOptions options,
+            ILogger<RazorLightTemplatingService> logger) : base(options, logger)
         {
             Engine = engine ?? throw new ArgumentNullException(nameof(engine));
         }

@@ -40,7 +40,7 @@ namespace FluiTec.AppFx.Networking.Mail.Services
 
         #region Constructors
 
-        /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService" /> class.</summary>
         /// <param name="options">The options.</param>
         protected MailKitSmtpMailService(MailServiceOptions options)
         {
@@ -48,9 +48,10 @@ namespace FluiTec.AppFx.Networking.Mail.Services
             ValidateOptions(options);
         }
 
-        /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailKitSmtpMailService" /> class.</summary>
         /// <param name="optionsMonitor">The optionsMonitor.</param>
-        protected MailKitSmtpMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor) : this(optionsMonitor.CurrentValue)
+        protected MailKitSmtpMailService(IOptionsMonitor<MailServiceOptions> optionsMonitor) : this(optionsMonitor
+            .CurrentValue)
         {
             OptionsMonitor = optionsMonitor;
             OptionsMonitor.OnChange(ValidateOptions);
@@ -68,14 +69,15 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <param name="recipientName">Name of the recipient.</param>
         /// <exception cref="System.NotImplementedException"></exception>
         /// <remarks>Empty recipientName means recipientName = recipient = email.</remarks>
-        public void SendEmail(string recipient, string subject, string content, TextFormat format, string recipientName = null)
+        public void SendEmail(string recipient, string subject, string content, TextFormat format,
+            string recipientName = null)
         {
             var message = new MimeMessage
             {
-                From = { new MailboxAddress(Options.FromName, Options.FromMail)},
-                To = { new MailboxAddress(recipientName ?? recipient, recipient) },
+                From = {new MailboxAddress(Options.FromName, Options.FromMail)},
+                To = {new MailboxAddress(recipientName ?? recipient, recipient)},
                 Subject = subject,
-                Body = new TextPart(format) { Text = content }
+                Body = new TextPart(format) {Text = content}
             };
 
             SendMail(message);
@@ -90,14 +92,15 @@ namespace FluiTec.AppFx.Networking.Mail.Services
         /// <returns>The task used to send the email.</returns>
         /// <exception cref="System.NotImplementedException"></exception>
         /// <remarks>Empty recipientName means recipientName = recipient = email.</remarks>
-        public async Task SendEmailAsync(string recipient, string subject, string content, TextFormat format, string recipientName = null)
+        public async Task SendEmailAsync(string recipient, string subject, string content, TextFormat format,
+            string recipientName = null)
         {
             var message = new MimeMessage
             {
-                From = { new MailboxAddress(Options.FromName, Options.FromMail) },
-                To = { new MailboxAddress(recipientName ?? recipient, recipient) },
+                From = {new MailboxAddress(Options.FromName, Options.FromMail)},
+                To = {new MailboxAddress(recipientName ?? recipient, recipient)},
                 Subject = subject,
-                Body = new TextPart(format) { Text = content}
+                Body = new TextPart(format) {Text = content}
             };
 
             await SendMailAsync(message);

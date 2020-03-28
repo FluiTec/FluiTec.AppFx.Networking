@@ -12,22 +12,13 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
     /// <seealso cref="RazorLight.Razor.EmbeddedRazorProject" />
     public class LocationExpandingEmbeddedRazorProject : EmbeddedRazorProject
     {
-        #region Fields
-
-        /// <summary>The expanders.</summary>
-        private readonly IEnumerable<IResourceExpander> _expanders;
-
-        /// <summary>The logger.</summary>
-        private readonly ILogger<LocationExpandingFileRazorProject> _logger;
-
-        #endregion
-
-        /// <summary>Initializes a new instance of the <see cref="LocationExpandingEmbeddedRazorProject"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="LocationExpandingEmbeddedRazorProject" /> class.</summary>
         /// <param name="rootType">Type of the root.</param>
         /// <param name="expanders">The expanders.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="rootNamespace">The rootNameSpace.</param>
-        public LocationExpandingEmbeddedRazorProject(Type rootType, IEnumerable<IResourceExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string rootNamespace) : base(rootType)
+        public LocationExpandingEmbeddedRazorProject(Type rootType, IEnumerable<IResourceExpander> expanders,
+            ILogger<LocationExpandingFileRazorProject> logger, string rootNamespace) : base(rootType)
         {
             if (string.IsNullOrWhiteSpace(rootNamespace))
                 throw new ArgumentException($"{nameof(rootNamespace)} must not be null or empty.");
@@ -36,13 +27,14 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
             _logger = logger; // we accept null here
         }
 
-        /// <summary>Initializes a new instance of the <see cref="LocationExpandingEmbeddedRazorProject"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="LocationExpandingEmbeddedRazorProject" /> class.</summary>
         /// <param name="assembly">The assembly.</param>
         /// <param name="expanders">The expanders.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="rootNamespace">The root namespace.</param>
         // ReSharper disable once UnusedMember.Global
-        public LocationExpandingEmbeddedRazorProject(Assembly assembly, IEnumerable<IResourceExpander> expanders, ILogger<LocationExpandingFileRazorProject> logger, string rootNamespace) : base(assembly, rootNamespace)
+        public LocationExpandingEmbeddedRazorProject(Assembly assembly, IEnumerable<IResourceExpander> expanders,
+            ILogger<LocationExpandingFileRazorProject> logger, string rootNamespace) : base(assembly, rootNamespace)
         {
             if (string.IsNullOrWhiteSpace(rootNamespace))
                 throw new ArgumentException($"{nameof(rootNamespace)} must not be null or empty.");
@@ -67,5 +59,15 @@ namespace FluiTec.AppFx.Networking.Mail.RazorLightExtensions.Projects
             // let the base-class try it's best and throw...
             return base.GetItemAsync(templateKey);
         }
+
+        #region Fields
+
+        /// <summary>The expanders.</summary>
+        private readonly IEnumerable<IResourceExpander> _expanders;
+
+        /// <summary>The logger.</summary>
+        private readonly ILogger<LocationExpandingFileRazorProject> _logger;
+
+        #endregion
     }
 }

@@ -12,27 +12,32 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.RazorLightExtensions.Projects
         [ExpectedException(typeof(ArgumentNullException))]
         public void ThrowsOnMissingExpanders()
         {
-            var unused = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), null, null, "MailViewsEmbedded");
+            var unused =
+                new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), null, null, "MailViewsEmbedded");
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
         public void ThrowsOnMissingNamespace()
         {
-            var unused = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "");
+            var unused =
+                new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] { }, null,
+                    "");
         }
 
         [TestMethod]
         public void DoesntThrowOnMissingResource()
         {
-            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "MailViewsEmbedded");
+            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings),
+                new IResourceExpander[] { }, null, "MailViewsEmbedded");
             Assert.IsFalse(project.GetItemAsync("Missing").Result.Exists);
         }
 
         [TestMethod]
         public void CanFindTemplate()
         {
-            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings), new IResourceExpander[] {}, null, "MailViewsEmbedded");
+            var project = new LocationExpandingEmbeddedRazorProject(typeof(GlobalTestSettings),
+                new IResourceExpander[] { }, null, "MailViewsEmbedded");
             Assert.IsTrue(project.GetItemAsync("Test").Result.Exists);
         }
     }

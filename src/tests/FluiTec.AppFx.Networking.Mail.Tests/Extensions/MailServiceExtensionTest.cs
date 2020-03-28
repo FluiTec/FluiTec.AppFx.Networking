@@ -21,9 +21,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail", "mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName", "Mail"),
+                    new KeyValuePair<string, string>("MailServerCertificateValidationOptions:Validate", "false")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -41,8 +42,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory", "MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", ".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -60,9 +61,10 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail", "mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName", "Mail"),
+                    new KeyValuePair<string, string>("MailServerCertificateValidationOptions:Validate", "false")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -78,8 +80,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory", "MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", ".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -96,7 +98,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -113,7 +115,7 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension","cshtml")
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", "cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
@@ -129,15 +131,16 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail", "mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName", "Mail"),
+                    new KeyValuePair<string, string>("MailServerCertificateValidationOptions:Validate", "false"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory", "MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", ".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
-            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationCodebase() };
+            var environment = new TestHostingEnvironment {ContentRootPath = ApplicationHelper.GetApplicationCodebase()};
             services.AddLogging();
             services.ConfigureMailServiceTemplated(environment, manager);
             var s = services.BuildServiceProvider().GetRequiredService<ITemplatingMailService>();
@@ -151,17 +154,18 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:TemplateSource","File"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:DefaultNamespace","MailViewsEmbedded"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail", "mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName", "Mail"),
+                    new KeyValuePair<string, string>("MailServerCertificateValidationOptions:Validate", "false"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:TemplateSource", "File"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:DefaultNamespace", "MailViewsEmbedded"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory", "MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", ".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
-            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationCodebase() };
+            var environment = new TestHostingEnvironment {ContentRootPath = ApplicationHelper.GetApplicationCodebase()};
             services.AddLogging();
             services.ConfigureMailServiceTemplated(environment, manager);
 
@@ -178,22 +182,23 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Extensions
             var builder = new ConfigurationBuilder()
                 .AddInMemoryCollection(new[]
                 {
-                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer","smtp.test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromMail","mail@test.com"),
-                    new KeyValuePair<string, string>("MailServiceOptions:FromName","Mail"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:TemplateSource","Embedded"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:DefaultNamespace","MailViewsEmbedded"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory","MailViews"),
-                    new KeyValuePair<string, string>("MailTemplateOptions:Extension",".cshtml")
+                    new KeyValuePair<string, string>("MailServiceOptions:SmtpServer", "smtp.test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromMail", "mail@test.com"),
+                    new KeyValuePair<string, string>("MailServiceOptions:FromName", "Mail"),
+                    new KeyValuePair<string, string>("MailServerCertificateValidationOptions:Validate", "false"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:TemplateSource", "Embedded"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:DefaultNamespace", "MailViewsEmbedded"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:BaseDirectory", "MailViews"),
+                    new KeyValuePair<string, string>("MailTemplateOptions:Extension", ".cshtml")
                 });
             var config = builder.Build();
             var manager = new ConsoleReportingConfigurationManager(config);
-            var environment = new TestHostingEnvironment { ContentRootPath = ApplicationHelper.GetApplicationCodebase() };
+            var environment = new TestHostingEnvironment {ContentRootPath = ApplicationHelper.GetApplicationCodebase()};
             services.AddLogging();
             services.ConfigureMailServiceTemplated(environment, manager, typeof(GlobalTestSettings));
 
             var s = services.BuildServiceProvider().GetRequiredService<RazorLightProject>();
-            
+
             Assert.IsTrue(s is EmbeddedRazorProject);
             Assert.IsTrue(s.GetItemAsync("Test").Result.Exists);
         }

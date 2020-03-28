@@ -6,7 +6,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
     [ConfigurationKey("MailTemplateOptions")]
     public partial class MailTemplateOptions
     {
-        /// <summary>Initializes a new instance of the <see cref="MailTemplateOptions"/> class.</summary>
+        /// <summary>Initializes a new instance of the <see cref="MailTemplateOptions" /> class.</summary>
         public MailTemplateOptions()
         {
             BaseDirectory = "MailViews";
@@ -25,7 +25,7 @@ namespace FluiTec.AppFx.Networking.Mail.Configuration
         /// <summary>Gets or sets the extension.</summary>
         /// <value>The extension.</value>
         public string Extension { get; set; }
-        
+
         /// <summary> Gets or sets the TemplateSource.</summary>
         /// <value>The TemplateSource.</value>
         public MailTemplateSource TemplateSource { get; set; }

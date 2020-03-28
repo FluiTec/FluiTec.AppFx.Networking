@@ -18,7 +18,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
             var options = new MailServiceOptions();
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.SmtpServer) && e.ResourceName == NotEmptyValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.SmtpServer) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
         }
@@ -29,7 +30,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
             var options = new MailServiceOptions {SmtpPort = 0};
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.SmtpPort) && e.ResourceName == GreaterThanValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.SmtpPort) && e.ResourceName == GreaterThanValidator);
 
             Assert.IsTrue(validated);
         }
@@ -40,7 +42,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
             var options = new MailServiceOptions();
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.FromMail) && e.ResourceName == NotEmptyValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.FromMail) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
         }
@@ -51,7 +54,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
             var options = new MailServiceOptions();
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.FromName) && e.ResourceName == NotEmptyValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.FromName) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
         }
@@ -62,7 +66,8 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
             var options = new MailServiceOptions {Authenticate = true};
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.Username) && e.ResourceName == NotEmptyValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.Username) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
         }
@@ -70,10 +75,11 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Configuration.Validators
         [TestMethod]
         public void ValidatesEmptyPasswordOnAuthenticate()
         {
-            var options = new MailServiceOptions { Authenticate = true };
+            var options = new MailServiceOptions {Authenticate = true};
             var validator = new MailServiceOptionsValidator();
             var result = validator.Validate(options);
-            var validated = result.Errors.Any(e => e.PropertyName == nameof(MailServiceOptions.Password) && e.ResourceName == NotEmptyValidator);
+            var validated = result.Errors.Any(e =>
+                e.PropertyName == nameof(MailServiceOptions.Password) && e.ResourceName == NotEmptyValidator);
 
             Assert.IsTrue(validated);
         }

@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FluiTec.AppFx.Options.Tests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "module.fluitec.appfx.options", "module.fluitec.appfx.options", "{0453841D-6F13-449E-AC6B-57BFC9DDCD5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FLuiTec.AppFx.Networking.Mail.ConsoleSample", "samples\FLuiTec.AppFx.Networking.Mail.ConsoleSample\FLuiTec.AppFx.Networking.Mail.ConsoleSample.csproj", "{9B82C759-5605-459D-9BD2-04D3B6C5AFE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{2E038B72-01E6-4BCF-BF81-BD6DA4792F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E038B72-01E6-4BCF-BF81-BD6DA4792F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E038B72-01E6-4BCF-BF81-BD6DA4792F23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B82C759-5605-459D-9BD2-04D3B6C5AFE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B82C759-5605-459D-9BD2-04D3B6C5AFE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B82C759-5605-459D-9BD2-04D3B6C5AFE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B82C759-5605-459D-9BD2-04D3B6C5AFE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 		{E7DABC9B-840B-4156-8227-5FABC8C01D60} = {0453841D-6F13-449E-AC6B-57BFC9DDCD5F}
 		{2E038B72-01E6-4BCF-BF81-BD6DA4792F23} = {0453841D-6F13-449E-AC6B-57BFC9DDCD5F}
 		{0453841D-6F13-449E-AC6B-57BFC9DDCD5F} = {7ACDAFD9-3D7A-43DE-A62A-9B36ADAB9BE9}
+		{9B82C759-5605-459D-9BD2-04D3B6C5AFE2} = {B93F2B60-FB62-4D10-AFFD-14E1298A4981}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F39AF568-3736-48A8-8A08-98056BDBF343}

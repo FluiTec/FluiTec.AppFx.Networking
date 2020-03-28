@@ -38,11 +38,12 @@ namespace FluiTec.AppFx.Networking.Mail.Tests.Services
             var mailTransportMock = new Mock<IMailTransport>();
             var project = new LocationExpandingFileRazorProject(new[] {new DefaultLocationExpander()}, null,
                 ApplicationHelper.GetMailViewPath(), ".cshtml");
-            var engine =  new RazorLightEngineBuilder()
+            var engine = new RazorLightEngineBuilder()
                 .UseProject(project)
                 .UseMemoryCachingProvider()
                 .Build();
-            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(), mailTransportMock.Object);
+            var mailService = new TestMailKitSmtpMailService(MailKitSmtpMailServiceTest.GetTestMailServiceOptions(),
+                mailTransportMock.Object);
             var templateService = new RazorLightTemplatingService(engine, new MailTemplateOptions(), null);
             var service = new TemplatingMailService(mailService, templateService);
 
