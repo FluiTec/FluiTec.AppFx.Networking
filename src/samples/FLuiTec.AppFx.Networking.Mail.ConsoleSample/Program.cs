@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using FLuiTec.AppFx.Networking.Mail.ConsoleSample.Configuration;
 using FLuiTec.AppFx.Networking.Mail.ConsoleSample.Helpers;
 using FLuiTec.AppFx.Networking.Mail.ConsoleSample.MailModels;
 using FluiTec.AppFx.Networking.Mail.Services;
@@ -17,7 +18,8 @@ namespace FLuiTec.AppFx.Networking.Mail.ConsoleSample
         {
             var serviceProvider = ConfigureServices(Configure(ApplicationHelper.GetApplicationPath()));
             var service = serviceProvider.GetRequiredService<ITemplatingMailService>();
-            service.SendMail(new Test("TestSubject"), "a.schnell@wtschnell.de", "Achim Schnell");
+            var appSettings = serviceProvider.GetRequiredService<ApplicationSettings>();
+            service.SendMail(new Test(appSettings.SampleSubject), appSettings.RecipientMail, appSettings.RecipientName);
         }
 
         private static IConfigurationRoot Configure(string path)
@@ -42,6 +44,8 @@ namespace FLuiTec.AppFx.Networking.Mail.ConsoleSample
                 Console.WriteLine("- MailServiceOptions:FromMail");
                 Console.WriteLine("- MailServiceOptions:Username");
                 Console.WriteLine("- MailServiceOptions:Password");
+                Console.WriteLine("- AppSettings:RecipientMail");
+                Console.WriteLine("- AppSettings:RecipientName");
                 Console.WriteLine(
                     "######################################################################################################################");
                 throw;
@@ -57,6 +61,7 @@ namespace FLuiTec.AppFx.Networking.Mail.ConsoleSample
                 var manager = new ConsoleReportingConfigurationManager(config);
                 var services = new ServiceCollection();
                 services.ConfigureMailServiceTemplated(environment, manager);
+                services.Configure<ApplicationSettings>(manager, true);
                 services.AddLogging(builder => builder
                     .AddFilter("Microsoft", LogLevel.Warning)
                     .AddFilter("System", LogLevel.Warning)
